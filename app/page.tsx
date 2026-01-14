@@ -1,4 +1,5 @@
 import Generator from "./components/Generator";
+import { Hero } from "./components/Hero";
 import Link from "next/link";
 import { Metadata } from "next";
 
@@ -16,15 +17,11 @@ export default function Home() {
       <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
         {/* Intro Section */}
-        <section className="text-center mb-12">
-          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-6">
-            Free Packing Slip Generator
-          </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
-            The simplest way to create packing slips for your business.
-            No sign-up required. Your data never leaves your browser.
-          </p>
-        </section>
+        {/* Intro Section - Server Component */}
+        <Hero
+          title="Free Packing Slip Generator"
+          intro="The simplest way to create packing slips for your business. No sign-up required. Your data never leaves your browser."
+        />
 
         {/* Generator Component */}
         <Generator />
