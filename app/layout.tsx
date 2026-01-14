@@ -6,6 +6,12 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://packingslipgenerator.com'),
+
+  // ✅ Google Search Console verification (replace the string below)
+  verification: {
+    google: "EwhW2nnntYEd3qD8aUAZ47mhdwIajrold06gKiV-cBo"
+  },
+
   title: {
     default: "Packing Slip Generator | Free Invoice & Packing Slip Template",
     template: "%s | Packing Slip Generator"
