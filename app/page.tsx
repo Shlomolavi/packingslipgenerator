@@ -20,7 +20,12 @@ export default function Home() {
         {/* Intro Section - Server Component */}
         <Hero
           title="Free Packing Slip Generator"
-          intro="The simplest way to create packing slips for your business. No sign-up required. Your data never leaves your browser."
+          intro={
+            <>
+              Create professional packing slips in seconds with our <Link href="/packing-slip-generator" className="text-blue-600 hover:underline">free packing slip generator</Link>.
+              Perfect for online sellers using <Link href="/packing-slip-for-shopify" className="text-blue-600 hover:underline">Shopify</Link> or <Link href="/packing-slip-for-etsy" className="text-blue-600 hover:underline">Etsy</Link>.
+            </>
+          }
         />
 
         {/* Generator Component */}

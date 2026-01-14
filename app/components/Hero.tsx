@@ -2,7 +2,7 @@ import React from 'react';
 
 interface HeroProps {
     title: string;
-    intro: string;
+    intro: React.ReactNode;
 }
 
 export const Hero = ({ title, intro }: HeroProps) => {
