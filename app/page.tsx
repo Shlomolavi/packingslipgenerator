@@ -1,5 +1,7 @@
 import Generator from "./components/Generator";
 import { Hero } from "./components/Hero";
+import { FaqSection } from "./components/FaqSection";
+import { faqData } from "./data/faq";
 import Link from "next/link";
 import { Metadata } from "next";
 
@@ -30,6 +32,9 @@ export default function Home() {
 
         {/* Generator Component */}
         <Generator />
+
+        {/* FAQ Section */}
+        <FaqSection items={faqData.default} />
 
         {/* SEO Internal Links */}
         <section className="mt-20 pt-12 border-t border-gray-200 dark:border-zinc-800">

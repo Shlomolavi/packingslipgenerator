@@ -1,6 +1,8 @@
 import { seoPages } from "../data/seo_pages";
 import Generator from "../components/Generator";
 import { Hero } from "../components/Hero";
+import { FaqSection } from "../components/FaqSection";
+import { faqData } from "../data/faq";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
@@ -48,6 +50,15 @@ export default async function SeoPage({ params }: { params: Promise<{ slug: stri
     // Filter out current page for links
     const otherPages = seoPages.filter(p => p.slug !== slug);
 
+    // Determine FAQ items based on slug
+    const currentFaqItems = [...faqData.default];
+    if (slug.includes('shopify')) {
+        currentFaqItems.push(...faqData.shopify);
+    }
+    if (slug.includes('etsy')) {
+        currentFaqItems.push(...faqData.etsy);
+    }
+
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 font-sans text-gray-900 dark:text-gray-100">
             <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -60,6 +71,9 @@ export default async function SeoPage({ params }: { params: Promise<{ slug: stri
 
                 {/* The Core Generator */}
                 <Generator />
+
+                {/* FAQ Section */}
+                <FaqSection items={currentFaqItems} />
 
                 {/* Internal Linking */}
                 <section className="mt-20 pt-12 border-t border-gray-200 dark:border-zinc-800">
