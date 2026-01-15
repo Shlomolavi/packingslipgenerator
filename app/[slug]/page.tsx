@@ -2,6 +2,7 @@ import { seoPages } from "../data/seo_pages";
 import Generator from "../components/Generator";
 import { Hero } from "../components/Hero";
 import { FaqSection } from "../components/FaqSection";
+import { RelatedTools } from "../components/RelatedTools";
 import { faqData } from "../data/faq";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -75,23 +76,8 @@ export default async function SeoPage({ params }: { params: Promise<{ slug: stri
                 {/* FAQ Section */}
                 <FaqSection items={currentFaqItems} />
 
-                {/* Internal Linking */}
-                <section className="mt-20 pt-12 border-t border-gray-200 dark:border-zinc-800">
-                    <h2 className="text-2xl font-bold text-center mb-8">Related Tools</h2>
-                    <nav className="flex flex-wrap justify-center gap-4 text-sm font-medium">
-                        <Link href="/" className="text-blue-600 dark:text-blue-400 hover:underline">
-                            Home
-                        </Link>
-                        {otherPages.map((p, i) => (
-                            <div key={p.slug} className="flex items-center gap-4">
-                                <span className="text-gray-300">•</span>
-                                <Link href={`/${p.slug}`} className="text-blue-600 dark:text-blue-400 hover:underline">
-                                    {p.title.split('|')[0].trim()}
-                                </Link>
-                            </div>
-                        ))}
-                    </nav>
-                </section>
+                {/* Related Tools */}
+                <RelatedTools currentSlug={slug} />
 
             </main>
 

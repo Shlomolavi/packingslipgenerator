@@ -1,6 +1,7 @@
 import Generator from "./components/Generator";
 import { Hero } from "./components/Hero";
 import { FaqSection } from "./components/FaqSection";
+import { RelatedTools } from "./components/RelatedTools";
 import { faqData } from "./data/faq";
 import Link from "next/link";
 import { Metadata } from "next";
@@ -36,17 +37,9 @@ export default function Home() {
         {/* FAQ Section */}
         <FaqSection items={faqData.default} />
 
-        {/* SEO Internal Links */}
-        <section className="mt-20 pt-12 border-t border-gray-200 dark:border-zinc-800">
-          <h2 className="text-2xl font-bold text-center mb-8">Specialized Generators</h2>
-          <div className="flex flex-wrap justify-center gap-4 text-sm text-blue-600 dark:text-blue-400 font-medium">
-            <Link href="/packing-slip-for-shopify" className="hover:underline">Shopify Packing Slip</Link>
-            <span className="text-gray-300">•</span>
-            <Link href="/packing-slip-for-etsy" className="hover:underline">Etsy Packing Slip</Link>
-            <span className="text-gray-300">•</span>
-            <Link href="/free-packing-slip-template" className="hover:underline">Free Template</Link>
-          </div>
-        </section>
+        {/* Related Tools */}
+        <RelatedTools />
+
 
       </main>
 
