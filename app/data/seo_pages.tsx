@@ -52,5 +52,33 @@ export const seoPages: SeoPageConfig[] = [
         description: "Download a free packing slip template or generate one instantly. Fully editable fields for sender, recipient, and line items.",
         h1: "Free Printable Packing Slip Template",
         intro: "Stop wrestling with Word or Excel. Our free packing slip template captures all the essential details—shipping address, tracking numbers, and itemized lists—in a clean, standardized format ready for any printer."
+    },
+    {
+        slug: "packing-slip-for-woocommerce",
+        title: "WooCommerce Packing Slip Generator | Free & Printable",
+        description: "Create professional packing slips for WooCommerce orders. No plugin required. Free printable PDF.",
+        h1: "WooCommerce Packing Slip Generator",
+        intro: "Need a packing slip for your WooCommerce store but don't want to install another plugin? Our free printable PDF generator is perfect for small businesses. Just enter your order details and print."
+    },
+    {
+        slug: "packing-slip-for-ebay",
+        title: "eBay Packing Slip Generator | Free PDF Template",
+        description: "Generate clean packing slips for eBay orders. Free, fast, and printable.",
+        h1: "eBay Packing Slip Generator",
+        intro: "Streamline your eBay order fulfillment with our free packing slip generator. Designed for individual sellers who need a fast, clean, and professional way to include documentation with every shipment."
+    },
+    {
+        slug: "packing-slip-for-amazon-fbm",
+        title: "Amazon FBM Packing Slip Generator | Free & Compliant",
+        description: "Create compliant packing slips for Amazon FBM orders. Free PDF generator.",
+        h1: "Amazon FBM Packing Slip Generator",
+        intro: "Ensure compliance with Amazon FBM (Fulfillment by Merchant) requirements using our clear, professional packing slips. Avoid confusion and provide your customers with exactly what they expect."
+    },
+    {
+        slug: "packing-slip-for-dropshipping",
+        title: "Dropshipping Packing Slip Generator | No Prices Included",
+        description: "Generate clean dropshipping packing slips without prices. Free and printable.",
+        h1: "Dropshipping Packing Slip Generator",
+        intro: "Keep your branding neutral and remove prices for blind dropshipping. Our tool allows you to create simplified packing slips that are perfect for supplier fulfillment and keep your customers happy."
     }
 ];
