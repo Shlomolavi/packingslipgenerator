@@ -78,23 +78,23 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
-  <header className="w-full">
-    <div className="mx-auto max-w-6xl px-4 py-3">
-      <Link href="/" className="inline-flex items-center gap-2">
-        <Image
-          src="/logo/packing-slip-generator-logo.png"
-          alt="Packing Slip Generator"
-          width={190}
-          height={36}
-          priority
-          style={{ height: 32, width: "auto" }}
-        />
-      </Link>
-    </div>
-  </header>
+        <header className="w-full border-b border-gray-200 dark:border-zinc-800">
+          <div className="mx-auto max-w-6xl px-4 py-3">
+            <Link href="/" className="inline-flex items-center gap-2">
+              <Image
+                src="/logo/packing-slip-generator-logo.png"
+                alt="Packing Slip Generator"
+                width={190}
+                height={36}
+                priority
+                style={{ height: 32, width: "auto" }}
+              />
+            </Link>
+          </div>
+        </header>
 
-  {children}
-</body>
+        {children}
+      </body>
 
     </html>
   );
