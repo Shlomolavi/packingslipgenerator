@@ -24,3 +24,9 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Strict override for site logo to prevent sizing issues */
+.site-logo {
+  height: 32px !important;
+  width: auto !important;
+}

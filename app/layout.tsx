@@ -1,16 +1,13 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Image from "next/image";
-import Link from "next/link";
-
+import { SiteHeader } from "./components/SiteHeader";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://packingslipgenerator.com'),
 
-  // ✅ Google Search Console verification (replace the string below)
   verification: {
     google: "EwhW2nnntYEd3qD8aUAZ47mhdwIajrold06gKiV-cBo"
   },
@@ -78,24 +75,9 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
-        <header className="w-full border-b border-gray-200 dark:border-zinc-800">
-          <div className="mx-auto max-w-7xl px-6 py-4">
-            <Link href="/" className="inline-flex items-center">
-              <Image
-                src="/logo/packing-slip-generator-logo.png"
-                alt="Packing Slip Generator"
-                className="h-8 w-auto object-contain shrink-0"
-                width={220}
-                height={40}
-                priority
-              />
-            </Link>
-          </div>
-        </header>
-
+        <SiteHeader />
         {children}
       </body>
-
     </html>
   );
 }
