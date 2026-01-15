@@ -80,5 +80,33 @@ export const seoPages: SeoPageConfig[] = [
         description: "Generate clean dropshipping packing slips without prices. Free and printable.",
         h1: "Dropshipping Packing Slip Generator",
         intro: "Keep your branding neutral and remove prices for blind dropshipping. Our tool allows you to create simplified packing slips that are perfect for supplier fulfillment and keep your customers happy."
+    },
+    {
+        slug: "packing-slip-for-wix",
+        title: "Wix Packing Slip Generator | Free Printable PDF",
+        description: "Create packing slips for Wix orders in seconds. Free, printable PDF — no app needed.",
+        h1: "Wix Packing Slip Generator",
+        intro: "Running your store on Wix? Use our free browser-based generator to quickly create professional PDF packing slips for your orders. No need to install extra apps or pay monthly fees."
+    },
+    {
+        slug: "packing-slip-for-squarespace",
+        title: "Squarespace Packing Slip Generator | Free PDF Template",
+        description: "Generate clean packing slips for Squarespace orders. Free printable PDF, no signup.",
+        h1: "Squarespace Packing Slip Generator",
+        intro: "Perfect for small businesses on Squarespace. fast-track your shipping workflow by generating clean, printable packing slips instantly using our free, no-signup tool."
+    },
+    {
+        slug: "packing-slip-for-shipstation",
+        title: "ShipStation Packing Slip Template | Free PDF Generator",
+        description: "Need a quick ShipStation-style packing slip? Generate a clean printable PDF instantly.",
+        h1: "ShipStation Packing Slip Template",
+        intro: "If you need a quick packing slip that matches a professional shipping workflow, our template is perfect. Create consistent, print-ready PDFs compatible with any standard shipping process."
+    },
+    {
+        slug: "packing-slip-for-pirateship",
+        title: "Pirate Ship Packing Slip Template | Free Printable PDF",
+        description: "Create a simple Pirate Ship-style packing slip. Free, fast, and printable PDF.",
+        h1: "Pirate Ship Packing Slip Template",
+        intro: "Ideal for small sellers using Pirate Ship for low-cost shipping. Generate a quick, simple, and professional packing slip to include with your labels in seconds."
     }
 ];
