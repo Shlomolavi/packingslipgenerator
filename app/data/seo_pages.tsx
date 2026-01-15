@@ -108,5 +108,93 @@ export const seoPages: SeoPageConfig[] = [
         description: "Create a simple Pirate Ship-style packing slip. Free, fast, and printable PDF.",
         h1: "Pirate Ship Packing Slip Template",
         intro: "Ideal for small sellers using Pirate Ship for low-cost shipping. Generate a quick, simple, and professional packing slip to include with your labels in seconds."
+    },
+    {
+        slug: "packing-slip-pdf-download",
+        title: "Packing Slip PDF Download | Free Instant Printable PDF",
+        description: "Download a professional packing slip PDF in seconds. Free, printable, and browser-based — no signup.",
+        h1: "Packing Slip PDF Download",
+        intro: (
+            <>
+                Need to download a packing slip PDF instantly? Use our free browser-based tool to generate a professional, print-ready document in seconds—formatted for both A4 and Letter paper sizes. It's faster than using a template and works perfectly with our <Link href="/packing-slip-generator" className="text-blue-600 hover:underline">free packing slip generator</Link>.
+            </>
+        )
+    },
+    {
+        slug: "printable-packing-slip",
+        title: "Printable Packing Slip Generator | Free PDF for Shipping",
+        description: "Create a printable packing slip for any order. Generate a clean PDF you can print and pack right away — free.",
+        h1: "Printable Packing Slip Generator",
+        intro: (
+            <>
+                Streamline your shipping workflow with our <Link href="/packing-slip-generator" className="text-blue-600 hover:underline">printable packing slip generator</Link>. Just fill in the order details, and we'll create a clean, professional PDF that you can print and include in the box immediately.
+            </>
+        )
+    },
+    {
+        slug: "packing-slip-template-pdf",
+        title: "Packing Slip Template PDF | Free Printable Template",
+        description: "Use a clean packing slip template and export it as a PDF instantly. Free and easy — no apps required.",
+        h1: "Packing Slip Template PDF",
+        intro: (
+            <>
+                Why start from scratch? Our ready-to-use packing slip template allows you to fill in your shipment data and export a polished PDF instantly. It's the easiest way to get a professional look without any design skills.
+            </>
+        )
+    },
+    {
+        slug: "packing-slip-with-notes",
+        title: "Packing Slip with Notes | Free PDF Generator",
+        description: "Add notes and instructions to your packing slip and export a clean PDF. Perfect for special handling and requests.",
+        h1: "Packing Slip with Notes",
+        intro: (
+            <>
+                Communication is key. Create a <Link href="/profession-packing-slip" className="text-blue-600 hover:underline">professional packing slip</Link> that includes a dedicated section for customer notes, special handling instructions, or internal memos to ensure every order is fulfilled correctly.
+            </>
+        )
+    },
+    {
+        slug: "packing-slip-with-tracking-number",
+        title: "Packing Slip with Tracking Number | Free Printable PDF",
+        description: "Create a packing slip that includes tracking details, then export a print-ready PDF. Free and easy to use.",
+        h1: "Packing Slip with Tracking Number",
+        intro: (
+            <>
+                Keep your customers informed. Generate a packing slip that prominently displays tracking numbers and carrier details. Our <Link href="/packing-slip-generator" className="text-blue-600 hover:underline">free tool</Link> ensures all critical tracking information is included on the document for easy reference.
+            </>
+        )
+    },
+    {
+        slug: "packing-slip-with-shipping-info",
+        title: "Packing Slip with Shipping Info | Carrier, Method & Weight (Free PDF)",
+        description: "Generate a packing slip that includes shipping details like carrier, method, and weight. Export a clean PDF — free.",
+        h1: "Packing Slip with Shipping Info",
+        intro: (
+            <>
+                Improve your fulfillment accuracy by including detailed shipping info on every slip. Our generator allows you to specify carrier, shipping method, and package weight, creating a complete record for your records and your customer.
+            </>
+        )
+    },
+    {
+        slug: "simple-packing-slip",
+        title: "Simple Packing Slip Generator | Free Clean PDF",
+        description: "Generate a simple, clean packing slip PDF without extra steps. Fast, free, and easy to use.",
+        h1: "Simple Packing Slip Generator",
+        intro: (
+            <>
+                Sometimes less is more. If you need a <Link href="/packing-slip-generator" className="text-blue-600 hover:underline">simple packing slip</Link> without the clutter, our tool generates a minimalist, easy-to-read PDF that gets the job done fast.
+            </>
+        )
+    },
+    {
+        slug: "professional-packing-slip",
+        title: "Professional Packing Slip Generator | Free Printable PDF",
+        description: "Create a professional-looking packing slip PDF suitable for businesses and fulfillment workflows — free.",
+        h1: "Professional Packing Slip Generator",
+        intro: (
+            <>
+                Make a great first impression with a professional packing slip. Our generator creates clean, consistent, and branded documents that look great in any package, helping you maintain a high standard for your business.
+            </>
+        )
     }
 ];
