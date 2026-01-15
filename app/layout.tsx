@@ -84,10 +84,10 @@ export default function RootLayout({
               <Image
                 src="/logo/packing-slip-generator-logo.png"
                 alt="Packing Slip Generator"
+                className="h-8 w-auto object-contain shrink-0"
                 width={220}
                 height={40}
                 priority
-                style={{ height: 32, width: "auto" }}
               />
             </Link>
           </div>
