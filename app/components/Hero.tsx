@@ -1,4 +1,6 @@
 import React from 'react';
+import Link from "next/link";
+import Image from "next/image";
 
 interface HeroProps {
     title: string;
@@ -8,6 +10,20 @@ interface HeroProps {
 export const Hero = ({ title, intro }: HeroProps) => {
     return (
         <section className="text-center mb-12">
+            {/* Site Logo */}
+            <div className="flex justify-center mb-6">
+                <Link href="/" aria-label="Packing Slip Generator Home">
+                    <Image
+                        src="/logo/packing-slip-generator-logo.png"
+                        alt="Packing Slip Generator"
+                        width={0}
+                        height={0}
+                        sizes="100vw"
+                        style={{ width: 'auto', height: '36px' }}
+                        priority
+                    />
+                </Link>
+            </div>
             <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-6">
                 {title}
             </h1>
