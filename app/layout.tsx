@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Image from "next/image";
+import Link from "next/link";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -74,7 +77,25 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+  <header className="w-full">
+    <div className="mx-auto max-w-6xl px-4 py-3">
+      <Link href="/" className="inline-flex items-center gap-2">
+        <Image
+          src="/logo/packing-slip-generator-logo.png"
+          alt="Packing Slip Generator"
+          width={190}
+          height={36}
+          priority
+          style={{ height: 32, width: "auto" }}
+        />
+      </Link>
+    </div>
+  </header>
+
+  {children}
+</body>
+
     </html>
   );
 }
