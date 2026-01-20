@@ -19,9 +19,7 @@ export const SiteHeader = () => {
           </span>
         </Link>
 
-        <span className="ml-4 text-xs text-gray-500 opacity-60 font-mono select-none">
-          v-LOGO-TEST-001
-        </span>
+
       </div>
     </header>
   );

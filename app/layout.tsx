@@ -12,6 +12,13 @@ export const metadata: Metadata = {
   },
   description:
     "Create professional packing slips for your shipments instantly. Free, secure, and easier than Excel.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/icon.png?v=3", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-icon.png?v=3" }],
+  },
 };
 
 export default function RootLayout({
