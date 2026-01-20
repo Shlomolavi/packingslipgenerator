@@ -13,7 +13,7 @@ export const SiteHeader = () => {
                         width={220}
                         height={40}
                         // Robust classnames to thwart global CSS overrides
-                        className="site-logo !h-8 !w-auto shrink-0 object-contain"
+                        className="site-logo !h-12 !w-auto shrink-0 object-contain"
                         priority
                     />
                 </Link>
