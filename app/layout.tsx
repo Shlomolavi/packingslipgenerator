@@ -11,11 +11,7 @@ export const metadata: Metadata = {
     template: "%s | Packing Slip Generator",
   },
   description:
-    "Create professional packing slips for your shipments instantly. Free, secure, and easier than Excel. Perfect for Shopify, Etsy, and small businesses.",
-  robots: {
-    index: true,
-    follow: true,
-  },
+    "Create professional packing slips for your shipments instantly. Free, secure, and easier than Excel.",
 };
 
 export default function RootLayout({
@@ -26,28 +22,29 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="min-h-screen flex flex-col">
-          {/* HEADER */}
-          <header className="w-full border-b border-gray-100">
-            <div className="mx-auto max-w-6xl px-4 py-3">
-              <a href="/" className="inline-flex items-center gap-2">
-                <img
-                  src="/logo/logo-32.png"
-                  alt="Packing Slip Generator"
-                  width={32}
-                  height={32}
-                  style={{ display: "block" }}
-                />
-                <span className="text-sm font-semibold text-gray-900">
-                  Packing Slip Generator
-                </span>
-              </a>
-            </div>
-          </header>
+        {/* HEADER */}
+        <header className="w-full border-b border-gray-100">
+          <div className="mx-auto max-w-6xl px-4 py-3">
+            <a
+              href="/"
+              className="inline-flex items-center gap-2 whitespace-nowrap"
+            >
+              <img
+                src="/logo/logo-icon-32.png"
+                alt="Packing Slip Generator"
+                width="32"
+                height="32"
+                style={{ display: "block" }}
+              />
+              <span className="text-sm font-semibold text-gray-900">
+                Packing Slip Generator
+              </span>
+            </a>
+          </div>
+        </header>
 
-          {/* PAGE CONTENT */}
-          <main className="flex-1">{children}</main>
-        </div>
+        {/* PAGE CONTENT */}
+        <main>{children}</main>
       </body>
     </html>
   );
