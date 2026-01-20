@@ -162,16 +162,16 @@ const formatAddress = (text?: string) => {
 };
 
 const formatOrderDisplay = (val?: string) => {
-    if (!val) return 'Draft';
+    if (!val) return 'Order Draft';
     // Remove all hashes and trim
     const clean = val.replace(/#/g, '').trim();
     // If it starts with ORD (case-insensitive), return as is (no hash)
     // "Order ##ORD-222" -> "Order ORD-222"
     if (/^ord/i.test(clean)) {
-        return clean;
+        return `Order ${clean}`;
     }
     // Otherwise ensure it has a hash
-    return `#${clean}`;
+    return `Order #${clean}`;
 };
 
 interface Item {
@@ -219,7 +219,7 @@ export const PackingSlipPDF = ({ items, sender, recipient, shipment, pageSize, s
                 <View style={styles.header}>
                     <View>
                         <Text style={styles.headerTitle}>Packing Slip</Text>
-                        <Text style={styles.headerSubtitle}>Order {formatOrderDisplay(shipment.orderNumber)}</Text>
+                        <Text style={styles.headerSubtitle}>{formatOrderDisplay(shipment.orderNumber)}</Text>
                     </View>
                     <View>
                         <Text style={{ color: 'white', fontSize: 10, opacity: 0.9 }}>{shipment.date}</Text>
