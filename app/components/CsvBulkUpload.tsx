@@ -25,37 +25,38 @@ interface CsvRow {
     [key: string]: string | undefined;
 }
 
-// Map CSV row to PDF props
-const mapRowToProps = (row: CsvRow) => {
+// Map CSV group to PDF props
+const mapGroupToProps = (rows: CsvRow[]) => {
+    const firstRow = rows[0];
     return {
-        items: [{
+        items: rows.map(row => ({
             id: crypto.randomUUID(),
             sku: row.SKU || '',
             description: row.Description || '',
             quantity: parseFloat(row.Quantity) || 0,
             unitPrice: parseFloat(row.Price) || 0,
-        }],
+        })),
         sender: {
-            name: row.SenderName || '',
-            address: row.SenderAddress || '',
-            phone: row.SenderPhone || '',
+            name: firstRow.SenderName || '',
+            address: firstRow.SenderAddress || '',
+            phone: firstRow.SenderPhone || '',
         },
         recipient: {
-            name: row.RecipientName || '',
-            address: row.RecipientAddress || '',
-            email: row.RecipientEmail || '',
+            name: firstRow.RecipientName || '',
+            address: firstRow.RecipientAddress || '',
+            email: firstRow.RecipientEmail || '',
         },
         shipment: {
-            date: row.Date || new Date().toISOString().split('T')[0],
-            orderNumber: row.OrderNumber || '',
-            poNumber: row.PONumber || '',
-            carrier: row.Carrier || '',
-            tracking: row.Tracking || '',
+            date: firstRow.Date || new Date().toISOString().split('T')[0],
+            orderNumber: firstRow.OrderNumber || '',
+            poNumber: firstRow.PONumber || '',
+            carrier: firstRow.Carrier || '',
+            tracking: firstRow.Tracking || '',
             shippingMethod: '',
             weight: '',
         },
         pageSize: 'A4' as const, // Default to A4 for bulk
-        showSku: !!row.SKU,
+        showSku: rows.some(r => r.SKU),
     };
 };
 
@@ -116,14 +117,28 @@ export const CsvBulkUpload = () => {
                 }
 
                 try {
-                    setStatus(`Generating ${rows.length} PDFs...`);
+                    // Group rows by OrderNumber
+                    const groups: Record<string, CsvRow[]> = {};
+                    rows.forEach(row => {
+                        // Normalize key: Use default if missing, trim spaces
+                        const key = row.OrderNumber ? row.OrderNumber.trim() : 'UNKNOWN_ORDER';
+                        if (!groups[key]) {
+                            groups[key] = [];
+                        }
+                        groups[key].push(row);
+                    });
+
+                    const groupKeys = Object.keys(groups);
+                    setStatus(`Generating ${groupKeys.length} PDFs from ${rows.length} items...`);
+
                     const zipData: fflate.AsyncZippable = {};
-                    const orderCounts: Record<string, number> = {};
+                    const filenameCounts: Record<string, number> = {};
 
                     // Sequential generation to avoid memory spike suitable for client side
-                    for (let i = 0; i < rows.length; i++) {
-                        const row = rows[i];
-                        const props = mapRowToProps(row);
+                    for (let i = 0; i < groupKeys.length; i++) {
+                        const orderNum = groupKeys[i];
+                        const groupRows = groups[orderNum];
+                        const props = mapGroupToProps(groupRows);
 
                         // Generate PDF Blob -> ArrayBuffer -> Uint8Array
                         const blob = await pdf(<PackingSlipPDF {...props} />).toBlob();
@@ -131,17 +146,21 @@ export const CsvBulkUpload = () => {
                         const u8 = new Uint8Array(buffer as ArrayBuffer);
 
                         // Handle filename uniqueness
-                        let baseName = row.OrderNumber || `Order-${i + 1}`;
-                        if (orderCounts[baseName]) {
-                            orderCounts[baseName]++;
-                            baseName = `${baseName}_${orderCounts[baseName]}`;
+                        let baseName = orderNum !== 'UNKNOWN_ORDER' ? orderNum : `Order-Group-${i + 1}`;
+
+                        // Sanitize filename
+                        baseName = baseName.replace(/[^a-zA-Z0-9-_]/g, '_');
+
+                        if (filenameCounts[baseName]) {
+                            filenameCounts[baseName]++;
+                            baseName = `${baseName}_${filenameCounts[baseName]}`;
                         } else {
-                            orderCounts[baseName] = 1;
+                            filenameCounts[baseName] = 1;
                         }
 
                         // Add to ZIP structure
                         zipData[`${baseName}.pdf`] = u8;
-                        setStatus(`Processed ${i + 1}/${rows.length}`);
+                        setStatus(`Processed ${i + 1}/${groupKeys.length} orders`);
                     }
 
                     setStatus('Zipping files...');
