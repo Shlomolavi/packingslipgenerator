@@ -150,10 +150,18 @@ const formatCurrency = (amount: number) => {
     }).format(amount);
 };
 
-// Sanitization: Replace newlines with comma+space to prevent rendering issues
+// Sanitization: Robust normalization for single-line output
 const formatLines = (text?: string) => {
     if (!text) return '-';
-    return text.replace(/\n/g, ', ').trim();
+    // 1. Split by newline or comma
+    // 2. Trim every segment
+    // 3. Filter out empty strings
+    // 4. Join with ", " to ensure clean separation without trailing punctuation mistakes
+    return text
+        .split(/[,\n]/)
+        .map(s => s.trim())
+        .filter(Boolean)
+        .join(', ');
 };
 
 interface Item {
