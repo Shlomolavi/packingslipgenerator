@@ -151,16 +151,26 @@ const formatCurrency = (amount: number) => {
 };
 
 // Sanitization: Robust normalization for single-line output
-const formatLines = (text?: string) => {
+const formatAddress = (text?: string) => {
     if (!text) return '-';
     return text
-        // Split by newline or comma to isolate fragments
-        .split(/[,\n]/)
-        // Trim and collapse multiple spaces into one
-        .map(s => s.trim().replace(/\s+/g, ' '))
-        // Filter out empty strings AND single-character "orphan" tokens (e.g. "1", ".", ",")
-        .filter(s => s.length > 1)
+        .replace(/\n/g, ', ') // Convert newlines first
+        .split(',')           // Split by comma
+        .map(s => s.trim().replace(/\s+/g, ' ')) // Cleanup whitespace
+        .filter(s => s.length > 1) // Remove empty and single-char artifacts (e.g. "1")
         .join(', ');
+};
+
+const formatOrderDisplay = (val?: string) => {
+    if (!val) return 'Draft';
+    // Collapse multiple hashes and trim
+    const clean = val.replace(/#+/g, '#').trim();
+    // If starts with # or ORD (case-insensitive), render as is
+    if (/^(#|ord)/i.test(clean)) {
+        return clean;
+    }
+    // Otherwise prepend #
+    return `#${clean}`;
 };
 
 interface Item {
@@ -208,7 +218,7 @@ export const PackingSlipPDF = ({ items, sender, recipient, shipment, pageSize, s
                 <View style={styles.header}>
                     <View>
                         <Text style={styles.headerTitle}>Packing Slip</Text>
-                        <Text style={styles.headerSubtitle}>Order #{shipment.orderNumber || 'Draft'}</Text>
+                        <Text style={styles.headerSubtitle}>Order {formatOrderDisplay(shipment.orderNumber)}</Text>
                     </View>
                     <View>
                         <Text style={{ color: 'white', fontSize: 10, opacity: 0.9 }}>{shipment.date}</Text>
@@ -225,7 +235,7 @@ export const PackingSlipPDF = ({ items, sender, recipient, shipment, pageSize, s
                         </View>
                         <View>
                             <Text style={styles.textLabel}>Address</Text>
-                            <Text style={styles.textValuePlain}>{formatLines(sender.address)}</Text>
+                            <Text style={styles.textValuePlain}>{formatAddress(sender.address)}</Text>
                         </View>
                         <View>
                             <Text style={styles.textLabel}>Phone</Text>
@@ -241,7 +251,7 @@ export const PackingSlipPDF = ({ items, sender, recipient, shipment, pageSize, s
                         </View>
                         <View>
                             <Text style={styles.textLabel}>Address</Text>
-                            <Text style={styles.textValuePlain}>{formatLines(recipient.address)}</Text>
+                            <Text style={styles.textValuePlain}>{formatAddress(recipient.address)}</Text>
                         </View>
                         <View>
                             <Text style={styles.textLabel}>Email</Text>
@@ -255,8 +265,8 @@ export const PackingSlipPDF = ({ items, sender, recipient, shipment, pageSize, s
                     <Text style={styles.sectionTitle}>Shipment Details</Text>
                     <View style={styles.row}>
                         <View style={styles.column}>
-                            <Text style={styles.textLabel}>Order #</Text>
-                            <Text style={styles.textValue}>{shipment.orderNumber || '-'}</Text>
+                            <Text style={styles.textLabel}>Order</Text>
+                            <Text style={styles.textValue}>{formatOrderDisplay(shipment.orderNumber)}</Text>
                         </View>
                         <View style={styles.column}>
                             <Text style={styles.textLabel}>PO Number</Text>
@@ -306,7 +316,7 @@ export const PackingSlipPDF = ({ items, sender, recipient, shipment, pageSize, s
                 {notes && (
                     <View style={[styles.section, { marginTop: 16, borderTopWidth: 1, borderTopColor: '#F3F4F6', paddingTop: 12 }]}>
                         <Text style={[styles.textLabel, { marginBottom: 4 }]}>Notes & Instructions</Text>
-                        <Text style={[styles.textValuePlain, { fontSize: 9, color: '#4B5563' }]}>{formatLines(notes)}</Text>
+                        <Text style={[styles.textValuePlain, { fontSize: 9, color: '#4B5563' }]}>{formatAddress(notes)}</Text>
                     </View>
                 )}
 
