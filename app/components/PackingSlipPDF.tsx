@@ -153,14 +153,13 @@ const formatCurrency = (amount: number) => {
 // Sanitization: Robust normalization for single-line output
 const formatLines = (text?: string) => {
     if (!text) return '-';
-    // 1. Split by newline or comma
-    // 2. Trim every segment
-    // 3. Filter out empty strings
-    // 4. Join with ", " to ensure clean separation without trailing punctuation mistakes
     return text
+        // Split by newline or comma to isolate fragments
         .split(/[,\n]/)
-        .map(s => s.trim())
-        .filter(Boolean)
+        // Trim and collapse multiple spaces into one
+        .map(s => s.trim().replace(/\s+/g, ' '))
+        // Filter out empty strings AND single-character "orphan" tokens (e.g. "1", ".", ",")
+        .filter(s => s.length > 1)
         .join(', ');
 };
 
@@ -191,7 +190,9 @@ interface PackingSlipPDFProps {
 }
 
 export const PackingSlipPDF = ({ items, sender, recipient, shipment, pageSize, showSku, notes }: PackingSlipPDFProps) => {
-    const totalAmount = items.reduce((sum, item) => sum + (item.quantity * item.unitPrice), 0);
+    // Filter out malformed rows (missing description) before calculation/rendering
+    const validItems = items.filter(item => item.description && item.description.trim().length > 0);
+    const totalAmount = validItems.reduce((sum, item) => sum + (item.quantity * item.unitPrice), 0);
 
     // Columns
     const colSku = { width: '15%' };
@@ -283,9 +284,9 @@ export const PackingSlipPDF = ({ items, sender, recipient, shipment, pageSize, s
                             <Text style={[styles.tableCellHeader, colPrice]}>Price</Text>
                             <Text style={[styles.tableCellHeader, colTotal]}>Total</Text>
                         </View>
-                        {items.map((item) => (
+                        {validItems.map((item) => (
                             <View key={item.id} style={styles.tableRow} wrap={false}>
-                                {showSku && <Text style={[styles.tableCell, colSku]}>{item.sku || '-'}</Text>}
+                                {showSku && <Text style={[styles.tableCell, colSku]}>{item.sku || ''}</Text>}
                                 <Text style={[styles.tableCell, colDesc]}>{item.description}</Text>
                                 <Text style={[styles.tableCell, colQty]}>{item.quantity}</Text>
                                 <Text style={[styles.tableCell, colPrice]}>{formatCurrency(item.unitPrice)}</Text>
