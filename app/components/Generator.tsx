@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import { PackingSlipPDF } from "./PackingSlipPDF";
+import { CsvBulkUpload } from "./CsvBulkUpload";
 
 // Dynamically import PDFDownloadLink to avoid SSR issues
 const PDFDownloadLink = dynamic(
@@ -599,6 +600,9 @@ export default function Generator() {
 
                 </form>
             </div>
+
+            {/* CSV Bulk Upload */}
+            <CsvBulkUpload />
 
             {/* Undo Toast */}
             {deletedItem && (
