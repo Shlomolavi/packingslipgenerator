@@ -163,13 +163,14 @@ const formatAddress = (text?: string) => {
 
 const formatOrderDisplay = (val?: string) => {
     if (!val) return 'Draft';
-    // Collapse multiple hashes and trim
-    const clean = val.replace(/#+/g, '#').trim();
-    // If starts with # or ORD (case-insensitive), render as is
-    if (/^(#|ord)/i.test(clean)) {
+    // Remove all hashes and trim
+    const clean = val.replace(/#/g, '').trim();
+    // If it starts with ORD (case-insensitive), return as is (no hash)
+    // "Order ##ORD-222" -> "Order ORD-222"
+    if (/^ord/i.test(clean)) {
         return clean;
     }
-    // Otherwise prepend #
+    // Otherwise ensure it has a hash
     return `#${clean}`;
 };
 
