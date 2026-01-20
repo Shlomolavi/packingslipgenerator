@@ -24,22 +24,25 @@ export default function RootLayout({
       <body className={inter.className}>
         {/* HEADER */}
         <header className="w-full border-b border-gray-100">
-          <div className="mx-auto max-w-6xl px-4 py-3">
+          <div className="mx-auto max-w-6xl px-4 py-3 flex items-center">
             <a
               href="/"
-              className="inline-flex items-center gap-2 whitespace-nowrap"
+              className="inline-flex items-center gap-3 whitespace-nowrap"
             >
               <img
-                src="/logo/logo-icon-32.png"
+                src="/logo/logo-icon-64.png"
                 alt="Packing Slip Generator"
-                width="32"
-                height="32"
+                width="48"
+                height="48"
                 style={{ display: "block" }}
               />
               <span className="text-sm font-semibold text-gray-900">
                 Packing Slip Generator
               </span>
             </a>
+            <span className="ml-3 text-xs opacity-60 font-mono text-gray-500 select-none">
+              v-HEADER-VERIFY-002
+            </span>
           </div>
         </header>
 
