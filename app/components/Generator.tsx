@@ -283,6 +283,9 @@ export default function Generator() {
                                 Error: {pdfError}
                             </span>
                         )}
+                        <p className="text-[10px] sm:text-xs text-blue-200/80 mt-2 font-medium tracking-wide">
+                            Add your logo to the PDF — coming soon
+                        </p>
                     </div>
                 </div>
             </header>
@@ -553,19 +556,24 @@ export default function Generator() {
                             </table>
                         </div>
 
-                        <div className="mt-4 flex justify-between items-center">
-                            <button
-                                type="button"
-                                onClick={handleAddItem}
-                                className="flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                                </svg>
-                                Add Item
-                            </button>
+                        <div className="mt-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                            <div className="flex items-center gap-4">
+                                <button
+                                    type="button"
+                                    onClick={handleAddItem}
+                                    className="flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                    </svg>
+                                    Add Item
+                                </button>
+                                <span className="text-xs text-gray-400 dark:text-gray-600 font-medium italic select-none">
+                                    Bulk orders? CSV upload coming soon
+                                </span>
+                            </div>
 
-                            <div className="text-right">
+                            <div className="text-right w-full sm:w-auto">
                                 {items.length > 0 && (
                                     <p className="text-lg font-bold text-gray-900 dark:text-white">
                                         Total: <span className="text-blue-600 dark:text-blue-400">
