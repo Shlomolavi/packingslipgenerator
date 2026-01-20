@@ -1,8 +1,5 @@
 import React from 'react';
-import { Page, Text, View, Document, StyleSheet, Font } from '@react-pdf/renderer';
-
-// Register a standard font (optional, but good for consistency)
-// For now relying on default Helvetica which is standard for PDF
+import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
     page: {
@@ -10,131 +7,140 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
         fontFamily: 'Helvetica',
         fontSize: 10,
-        padding: 40, // More generous margin (similar to web UI padding)
-        color: '#111827', // Gray-900
+        padding: 40,
+        color: '#111827',
     },
+    // Compact Header
     header: {
-        backgroundColor: '#2563EB', // Blue-600
+        backgroundColor: '#2563EB',
         color: 'white',
-        padding: 24, // Matching UI p-8 (approx 32px, simplified to 24pt for PDF scale)
+        paddingHorizontal: 24,
+        paddingVertical: 16, // Reduced height
+        marginBottom: 20,
+        borderRadius: 4, // Subtle polish
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 24,
     },
     headerTitle: {
-        fontSize: 24, // Matching UI text-3xl
+        fontSize: 18, // Reduced from 24
         fontWeight: 'bold',
-        marginBottom: 4,
+        marginBottom: 2,
     },
     headerSubtitle: {
-        fontSize: 10,
-        color: '#DBEAFE', // Blue-100
+        fontSize: 9,
+        color: '#DBEAFE',
+        opacity: 0.9,
     },
+    // Sections
     section: {
-        marginBottom: 20,
+        marginBottom: 16, // Tighter spacing
     },
     row: {
         flexDirection: 'row',
-        gap: 30, // Increased gap for better visual separation
+        gap: 24,
     },
     column: {
         flex: 1,
         flexDirection: 'column',
     },
     sectionTitle: {
-        fontSize: 12, // text-xl is bigger, but 12pt is standard for PDF headers. Let's start with 14pt parity.
+        fontSize: 10,
         fontWeight: 'bold',
+        textTransform: 'uppercase',
+        color: '#374151',
         borderBottomWidth: 1,
-        borderBottomColor: '#E5E7EB', // Gray-200
-        marginBottom: 8,
-        paddingBottom: 4,
-        color: '#1F2937', // Gray-800
+        borderBottomColor: '#E5E7EB',
+        marginBottom: 6,
+        paddingBottom: 2,
     },
+    // Typography Hierarchy
     textLabel: {
-        fontSize: 8, // text-sm
-        color: '#374151', // Gray-700
-        marginBottom: 2,
-        fontWeight: 'medium',
+        fontSize: 8,
+        color: '#6B7280', // Lighter for labels
+        marginBottom: 1,
+        textTransform: 'uppercase',
+        fontWeight: 'bold',
     },
     textValue: {
         fontSize: 10,
+        color: '#111827', // Darker for values
         marginBottom: 8,
-        lineHeight: 1.4,
+        lineHeight: 1.3,
+        fontFamily: 'Helvetica-Bold', // Slight emphasis
     },
-    // Table Styles
+    textValuePlain: { // Non-bold value for longer text
+        fontSize: 10,
+        color: '#111827',
+        marginBottom: 8,
+        lineHeight: 1.3,
+    },
+    // Table
     table: {
         display: 'flex',
         width: 'auto',
-        borderStyle: 'solid',
         borderWidth: 1,
         borderColor: '#E5E7EB',
-        borderTopLeftRadius: 6, // Matching rounded-lg
-        borderTopRightRadius: 6,
-        borderBottomRightRadius: 6,
-        borderBottomLeftRadius: 6,
-        overflow: 'hidden', // simulates rounded corners clipping
-        marginTop: 10,
+        borderRadius: 4,
+        overflow: 'hidden',
+        marginTop: 8,
     },
     tableRow: {
         flexDirection: 'row',
         borderBottomWidth: 1,
-        borderBottomColor: '#F3F4F6', // Gray-100
-        minHeight: 30,
+        borderBottomColor: '#F3F4F6',
+        minHeight: 24, // Compact rows
         alignItems: 'center',
     },
     tableHeader: {
-        backgroundColor: '#F9FAFB', // Gray-50
+        backgroundColor: '#F9FAFB',
         borderBottomWidth: 1,
         borderBottomColor: '#E5E7EB',
     },
     tableCellHeader: {
-        fontSize: 9,
+        fontSize: 8,
         fontWeight: 'bold',
-        color: '#4B5563', // Gray-600
-        padding: 10,
+        color: '#4B5563',
+        padding: 6,
         textTransform: 'uppercase',
-        letterSpacing: 0.5,
     },
     tableCell: {
-        fontSize: 10,
-        padding: 10,
-        color: '#111827',
+        fontSize: 9,
+        padding: 6,
+        color: '#1F2937',
     },
-    // Columns widths - Dynamic via props
-
-    footer: {
-        position: 'absolute',
-        bottom: 30,
-        left: 40,
-        right: 40,
-        borderTopWidth: 1,
-        borderTopColor: '#E5E7EB',
-        paddingTop: 10,
-        textAlign: 'center',
-        color: '#9CA3AF', // Gray-400
-        fontSize: 8,
-    },
+    // Footer & Totals
     totalSection: {
         flexDirection: 'row',
         justifyContent: 'flex-end',
         marginTop: 12,
-        paddingRight: 10,
+        paddingRight: 6,
     },
     totalLabel: {
-        fontSize: 14,
+        fontSize: 11,
         fontWeight: 'bold',
-        marginRight: 10,
-        color: '#111827',
+        marginRight: 12,
+        color: '#374151',
     },
     totalValue: {
-        fontSize: 14,
+        fontSize: 12,
         fontWeight: 'bold',
-        color: '#2563EB', // Blue-600
-    }
+        color: '#2563EB',
+    },
+    footer: {
+        position: 'absolute',
+        bottom: 24,
+        left: 40,
+        right: 40,
+        borderTopWidth: 1,
+        borderTopColor: '#E5E7EB',
+        paddingTop: 8,
+        textAlign: 'center',
+        color: '#9CA3AF',
+        fontSize: 8,
+    },
 });
 
-// Helper for currency formatting
 const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -144,26 +150,24 @@ const formatCurrency = (amount: number) => {
     }).format(amount);
 };
 
+// Sanitization: Replace newlines with comma+space to prevent rendering issues
+const formatLines = (text?: string) => {
+    if (!text) return '-';
+    return text.replace(/\n/g, ', ').trim();
+};
+
 interface Item {
     id: string;
     sku?: string;
     description: string;
-    quantity: number; // PDF always receives parsed numbers
+    quantity: number;
     unitPrice: number;
 }
 
 interface PackingSlipPDFProps {
     items: Item[];
-    sender: {
-        name: string;
-        address: string;
-        phone: string;
-    };
-    recipient: {
-        name: string;
-        address: string;
-        email: string;
-    };
+    sender: { name: string; address: string; phone: string; };
+    recipient: { name: string; address: string; email: string; };
     shipment: {
         date: string;
         orderNumber: string;
@@ -181,37 +185,38 @@ interface PackingSlipPDFProps {
 export const PackingSlipPDF = ({ items, sender, recipient, shipment, pageSize, showSku, notes }: PackingSlipPDFProps) => {
     const totalAmount = items.reduce((sum, item) => sum + (item.quantity * item.unitPrice), 0);
 
-    // Dynamic Column Widths
+    // Columns
     const colSku = { width: '15%' };
-    const colDesc = { width: showSku ? '30%' : '45%' };
-    const colQty = { width: '15%', textAlign: 'center' as const };
+    const colDesc = { width: showSku ? '35%' : '50%' };
+    const colQty = { width: '10%', textAlign: 'right' as const };
     const colPrice = { width: '20%', textAlign: 'right' as const };
     const colTotal = { width: '20%', textAlign: 'right' as const };
 
     return (
         <Document>
             <Page size={pageSize} style={styles.page}>
-
                 {/* Header */}
                 <View style={styles.header}>
                     <View>
-                        <Text style={styles.headerTitle}>Packing Slip Generator</Text>
-                        <Text style={styles.headerSubtitle}>Create and print professional packing slips.</Text>
+                        <Text style={styles.headerTitle}>Packing Slip</Text>
+                        <Text style={styles.headerSubtitle}>Order #{shipment.orderNumber || 'Draft'}</Text>
+                    </View>
+                    <View>
+                        <Text style={{ color: 'white', fontSize: 10, opacity: 0.9 }}>{shipment.date}</Text>
                     </View>
                 </View>
 
-                {/* Sender & Recipient Grid */}
+                {/* Sender & Recipient */}
                 <View style={styles.row}>
-                    {/* Sender */}
                     <View style={styles.column}>
                         <Text style={styles.sectionTitle}>Sender (From)</Text>
                         <View>
-                            <Text style={styles.textLabel}>Company Name / Name</Text>
+                            <Text style={styles.textLabel}>Name</Text>
                             <Text style={styles.textValue}>{sender.name || '-'}</Text>
                         </View>
                         <View>
                             <Text style={styles.textLabel}>Address</Text>
-                            <Text style={styles.textValue}>{sender.address || '-'}</Text>
+                            <Text style={styles.textValuePlain}>{formatLines(sender.address)}</Text>
                         </View>
                         <View>
                             <Text style={styles.textLabel}>Phone</Text>
@@ -219,16 +224,15 @@ export const PackingSlipPDF = ({ items, sender, recipient, shipment, pageSize, s
                         </View>
                     </View>
 
-                    {/* Recipient */}
                     <View style={styles.column}>
                         <Text style={styles.sectionTitle}>Recipient (To)</Text>
                         <View>
-                            <Text style={styles.textLabel}>Customer / Company Name</Text>
+                            <Text style={styles.textLabel}>Name</Text>
                             <Text style={styles.textValue}>{recipient.name || '-'}</Text>
                         </View>
                         <View>
-                            <Text style={styles.textLabel}>Shipping Address</Text>
-                            <Text style={styles.textValue}>{recipient.address || '-'}</Text>
+                            <Text style={styles.textLabel}>Address</Text>
+                            <Text style={styles.textValuePlain}>{formatLines(recipient.address)}</Text>
                         </View>
                         <View>
                             <Text style={styles.textLabel}>Email</Text>
@@ -238,90 +242,69 @@ export const PackingSlipPDF = ({ items, sender, recipient, shipment, pageSize, s
                 </View>
 
                 {/* Shipment Details */}
-                <View style={[styles.section, { marginTop: 10 }]}>
+                <View style={[styles.section, { marginTop: 12 }]}>
                     <Text style={styles.sectionTitle}>Shipment Details</Text>
-                    {/* Row 1 */}
                     <View style={styles.row}>
                         <View style={styles.column}>
-                            <Text style={styles.textLabel}>Date</Text>
-                            <Text style={styles.textValue}>{shipment.date || '-'}</Text>
-                        </View>
-                        <View style={styles.column}>
-                            <Text style={styles.textLabel}>Order Number</Text>
+                            <Text style={styles.textLabel}>Order #</Text>
                             <Text style={styles.textValue}>{shipment.orderNumber || '-'}</Text>
                         </View>
                         <View style={styles.column}>
                             <Text style={styles.textLabel}>PO Number</Text>
                             <Text style={styles.textValue}>{shipment.poNumber || '-'}</Text>
                         </View>
-                    </View>
-                    {/* Row 2 - Extra Fields */}
-                    <View style={[styles.row, { marginTop: 10 }]}>
                         <View style={styles.column}>
                             <Text style={styles.textLabel}>Carrier</Text>
                             <Text style={styles.textValue}>{shipment.carrier || '-'}</Text>
                         </View>
                         <View style={styles.column}>
-                            <Text style={styles.textLabel}>Method</Text>
-                            <Text style={styles.textValue}>{shipment.shippingMethod || '-'}</Text>
-                        </View>
-                        <View style={styles.column}>
                             <Text style={styles.textLabel}>Tracking</Text>
                             <Text style={styles.textValue}>{shipment.tracking || '-'}</Text>
-                        </View>
-                        <View style={styles.column}>
-                            <Text style={styles.textLabel}>Weight</Text>
-                            <Text style={styles.textValue}>{shipment.weight || '-'}</Text>
                         </View>
                     </View>
                 </View>
 
                 {/* Items Table */}
-                <View>
+                <View style={{ marginTop: 4 }}>
                     <Text style={styles.sectionTitle}>Packing List</Text>
-                </View>
-
-                <View style={styles.table}>
-                    {/* Table Header */}
-                    <View style={[styles.tableRow, styles.tableHeader]} fixed>
-                        {showSku && <Text style={[styles.tableCellHeader, colSku]}>SKU</Text>}
-                        <Text style={[styles.tableCellHeader, colDesc]}>Description</Text>
-                        <Text style={[styles.tableCellHeader, colQty]}>Qty</Text>
-                        <Text style={[styles.tableCellHeader, colPrice]}>Unit Price</Text>
-                        <Text style={[styles.tableCellHeader, colTotal]}>Total</Text>
-                    </View>
-
-                    {/* Table Rows */}
-                    {items.map((item, index) => (
-                        <View key={item.id} style={styles.tableRow} wrap={false}>
-                            {showSku && <Text style={[styles.tableCell, colSku]}>{item.sku || '-'}</Text>}
-                            <Text style={[styles.tableCell, colDesc]}>{item.description}</Text>
-                            <Text style={[styles.tableCell, colQty]}>{item.quantity}</Text>
-                            <Text style={[styles.tableCell, colPrice]}>{formatCurrency(item.unitPrice)}</Text>
-                            <Text style={[styles.tableCell, colTotal]}>{formatCurrency(item.quantity * item.unitPrice)}</Text>
+                    <View style={styles.table}>
+                        <View style={[styles.tableRow, styles.tableHeader]} fixed>
+                            {showSku && <Text style={[styles.tableCellHeader, colSku]}>SKU</Text>}
+                            <Text style={[styles.tableCellHeader, colDesc]}>Item Description</Text>
+                            <Text style={[styles.tableCellHeader, colQty]}>Qty</Text>
+                            <Text style={[styles.tableCellHeader, colPrice]}>Price</Text>
+                            <Text style={[styles.tableCellHeader, colTotal]}>Total</Text>
                         </View>
-                    ))}
+                        {items.map((item) => (
+                            <View key={item.id} style={styles.tableRow} wrap={false}>
+                                {showSku && <Text style={[styles.tableCell, colSku]}>{item.sku || '-'}</Text>}
+                                <Text style={[styles.tableCell, colDesc]}>{item.description}</Text>
+                                <Text style={[styles.tableCell, colQty]}>{item.quantity}</Text>
+                                <Text style={[styles.tableCell, colPrice]}>{formatCurrency(item.unitPrice)}</Text>
+                                <Text style={[styles.tableCell, colTotal]}>{formatCurrency(item.quantity * item.unitPrice)}</Text>
+                            </View>
+                        ))}
+                    </View>
                 </View>
 
                 {/* Total */}
                 <View style={styles.totalSection}>
-                    <Text style={styles.totalLabel}>Total:</Text>
+                    <Text style={styles.totalLabel}>Grand Total:</Text>
                     <Text style={styles.totalValue}>{formatCurrency(totalAmount)}</Text>
                 </View>
 
-                {/* Notes Section - Renders only if notes exist */}
+                {/* Notes */}
                 {notes && (
-                    <View style={[styles.section, { marginTop: 24, borderTopWidth: 1, borderTopColor: '#E5E7EB', paddingTop: 12 }]}>
-                        <Text style={[styles.sectionTitle, { borderBottomWidth: 0, fontSize: 10, color: '#4B5563' }]}>Notes & Instructions</Text>
-                        <Text style={[styles.textValue, { color: '#6B7280', fontSize: 9 }]}>{notes}</Text>
+                    <View style={[styles.section, { marginTop: 16, borderTopWidth: 1, borderTopColor: '#F3F4F6', paddingTop: 12 }]}>
+                        <Text style={[styles.textLabel, { marginBottom: 4 }]}>Notes & Instructions</Text>
+                        <Text style={[styles.textValuePlain, { fontSize: 9, color: '#4B5563' }]}>{formatLines(notes)}</Text>
                     </View>
                 )}
 
                 {/* Footer */}
                 <Text style={styles.footer} fixed>
-                    © {new Date().getFullYear()} Packing Slip Generator.
+                    Thank you for your business!
                 </Text>
-
             </Page>
         </Document>
     );
