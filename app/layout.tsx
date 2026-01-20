@@ -32,17 +32,14 @@ export default function RootLayout({
               <img
                 src="/logo/logo-icon-64.png"
                 alt="Packing Slip Generator"
-                width="48"
-                height="48"
+                width="56"
+                height="56"
                 style={{ display: "block" }}
               />
               <span className="text-sm font-semibold text-gray-900">
                 Packing Slip Generator
               </span>
             </a>
-            <span className="ml-3 text-xs opacity-60 font-mono text-gray-500 select-none">
-              v-HEADER-VERIFY-002
-            </span>
           </div>
         </header>
 
