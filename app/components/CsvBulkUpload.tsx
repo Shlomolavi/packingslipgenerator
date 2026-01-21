@@ -76,10 +76,26 @@ export const CsvBulkUpload = () => {
         'Price'
     ];
 
+    const sendTelemetry = async (payload: any) => {
+        try {
+            await fetch('/api/telemetry', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    event: 'csv_bulk_generate',
+                    ...payload
+                })
+            });
+        } catch (e) {
+            // Silent fail
+        }
+    };
+
     const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
 
+        const startTime = performance.now();
         setIsLoading(true);
         setError(null);
         setStatus('Parsing CSV...');
@@ -89,8 +105,10 @@ export const CsvBulkUpload = () => {
             skipEmptyLines: true,
             complete: async (results) => {
                 if (results.errors.length > 0) {
-                    setError(`CSV Parsing Error: ${results.errors[0].message}`);
+                    const msg = results.errors[0].message;
+                    setError(`CSV Parsing Error: ${msg}`);
                     setIsLoading(false);
+                    sendTelemetry({ success: false, error: msg });
                     return;
                 }
 
@@ -98,12 +116,14 @@ export const CsvBulkUpload = () => {
                 if (rows.length === 0) {
                     setError('CSV file is empty.');
                     setIsLoading(false);
+                    sendTelemetry({ success: false, error: 'Empty file' });
                     return;
                 }
 
                 if (rows.length > 100) {
                     setError('Limit exceeded: Max 100 rows per batch.');
                     setIsLoading(false);
+                    sendTelemetry({ success: false, error: 'Limit exceeded', rows_count: rows.length });
                     return;
                 }
 
@@ -111,8 +131,10 @@ export const CsvBulkUpload = () => {
                 const headers = results.meta.fields || [];
                 const missingColumns = requiredColumns.filter(col => !headers.includes(col));
                 if (missingColumns.length > 0) {
-                    setError(`Missing required columns: ${missingColumns.join(', ')}`);
+                    const msg = `Missing required columns: ${missingColumns.join(', ')}`;
+                    setError(msg);
                     setIsLoading(false);
+                    sendTelemetry({ success: false, error: msg });
                     return;
                 }
 
@@ -171,23 +193,37 @@ export const CsvBulkUpload = () => {
                             console.error(err);
                             setError('Failed to zip files.');
                             setIsLoading(false);
+                            sendTelemetry({ success: false, error: 'Zip failure' });
                             return;
                         }
                         const zipBlob = new Blob([out] as BlobPart[], { type: 'application/zip' });
                         saveAs(zipBlob, 'bulk-packing-slips.zip');
                         setStatus('Done! Download started.');
                         setIsLoading(false);
+
+                        // Success Telemetry
+                        sendTelemetry({
+                            success: true,
+                            orders_count: groupKeys.length,
+                            rows_count: rows.length,
+                            file_size_bytes: out.length,
+                            duration_ms: Math.round(performance.now() - startTime)
+                        });
                     });
 
                 } catch (err: any) {
                     console.error(err);
-                    setError(err.message || 'Failed to generate ZIP.');
+                    const msg = err.message || 'Failed to generate ZIP.';
+                    setError(msg);
                     setIsLoading(false);
+                    sendTelemetry({ success: false, error: msg });
                 }
             },
             error: (err) => {
-                setError(`Failed to read file: ${err.message}`);
+                const msg = `Failed to read file: ${err.message}`;
+                setError(msg);
                 setIsLoading(false);
+                sendTelemetry({ success: false, error: msg });
             }
         });
     };
