@@ -21,7 +21,9 @@ interface CsvRow {
     Date?: string;
     PONumber?: string;
     Carrier?: string;
-    Tracking?: string;
+    TrackingNumber?: string;
+    ShippingMethod?: string;
+    Weight?: string;
     [key: string]: string | undefined;
 }
 
@@ -51,9 +53,9 @@ const mapGroupToProps = (rows: CsvRow[]) => {
             orderNumber: firstRow.OrderNumber || '',
             poNumber: firstRow.PONumber || '',
             carrier: firstRow.Carrier || '',
-            tracking: firstRow.Tracking || '',
-            shippingMethod: '',
-            weight: '',
+            tracking: firstRow.TrackingNumber || '',
+            shippingMethod: firstRow.ShippingMethod || '',
+            weight: firstRow.Weight || '',
         },
         pageSize: 'A4' as const, // Default to A4 for bulk
         showSku: rows.some(r => r.SKU),
@@ -252,12 +254,15 @@ export const CsvBulkUpload = () => {
                         Orders with the same <code className="bg-blue-100 dark:bg-blue-800 px-1 rounded">OrderNumber</code> will be combined into a single packing slip.
                     </p>
                     <div className="mb-4">
-                        <span className="font-medium text-blue-900 dark:text-blue-100 block mb-1">Required columns (in this exact order):</span>
+                        <span className="font-medium text-blue-900 dark:text-blue-100 block mb-1">Supported columns (recommended order):</span>
                         <div className="bg-white dark:bg-zinc-900 p-2 rounded border border-blue-200 dark:border-blue-800 overflow-x-auto">
                             <code className="text-xs text-blue-700 dark:text-blue-300 whitespace-nowrap">
-                                OrderNumber, SenderName, SenderAddress, RecipientName, RecipientAddress, SKU, Description, Quantity, Price
+                                OrderNumber, SenderName, SenderAddress, SenderPhone, RecipientName, RecipientAddress, RecipientEmail, Date, PONumber, ShippingMethod, Carrier, TrackingNumber, Weight, SKU, Description, Quantity, Price
                             </code>
                         </div>
+                        <p className="text-xs text-blue-800 dark:text-blue-200 mt-2 italic">
+                            Only OrderNumber, SenderName, SenderAddress, RecipientName, RecipientAddress, Description, Quantity, Price are required. All other fields are optional.
+                        </p>
                     </div>
                     <a
                         href="/sample-bulk-orders.csv"

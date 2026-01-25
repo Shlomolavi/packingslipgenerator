@@ -1,4 +1,5 @@
-OrderNumber,SenderName,SenderAddress,RecipientName,RecipientAddress,SKU,Description,Quantity,Price
-ORD-1001,Example Store,"123 Main St, New York, NY 10001",John Smith,"456 Oak Ave, Los Angeles, CA 90001",SKU-001,Sample Product One,1,49.99
-ORD-1001,Example Store,"123 Main St, New York, NY 10001",John Smith,"456 Oak Ave, Los Angeles, CA 90001",SKU-002,Sample Product Two,2,19.50
-ORD-1002,Example Store,"123 Main St, New York, NY 10001",Jane Doe,"789 Pine Rd, Austin, TX 78701",SKU-003,Another Sample Product,1,129.00
+OrderNumber,SenderName,SenderAddress,SenderPhone,RecipientName,RecipientAddress,RecipientEmail,Date,PONumber,ShippingMethod,Carrier,TrackingNumber,Weight,SKU,Description,Quantity,Price
+ORD-2001,Example Store,"123 Main St, New York, NY 10001",+1-555-123-4567,John Smith,"456 Oak Ave, Los Angeles, CA 90001",john@example.com,2026-01-29,PO-10001,Ground,UPS,1Z999AA10123456784,"5 lbs",SKU-001,Sample Product One,1,49.99
+ORD-2001,Example Store,"123 Main St, New York, NY 10001",+1-555-123-4567,John Smith,"456 Oak Ave, Los Angeles, CA 90001",john@example.com,2026-01-29,PO-10001,Ground,UPS,1Z999AA10123456784,"5 lbs",SKU-002,Sample Product Two,2,19.50
+ORD-2002,Example Store,"123 Main St, New York, NY 10001",,Jane Doe,"789 Pine Rd, Austin, TX 78701",,2026-01-29,,Express,,,,"",SKU-003,Another Sample Product,1,129.00
+ORD-2003,Example Store,"123 Main St, New York, NY 10001",,Emily Davis,"10 Market St, Miami, FL 33101",,2026-01-29,,,,,,"",,Simple Item Description,3,9.99
