@@ -115,7 +115,7 @@ export const RelatedTools = ({ currentSlug }: RelatedToolsProps) => {
                             </Link>
                         ))}
                         <Link
-                            href="/"
+                            href="/bulk-csv-packing-slip"
                             className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition-colors"
                         >
                             Bulk Packing Slip Generator (CSV Upload)

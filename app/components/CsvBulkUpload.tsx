@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Link from 'next/link';
 import Papa from 'papaparse';
 import * as fflate from 'fflate';
 import { pdf } from '@react-pdf/renderer';
@@ -239,9 +240,15 @@ export const CsvBulkUpload = () => {
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
                     Bulk CSV Upload
                 </h3>
-                <h2 className="text-lg font-medium text-blue-600 dark:text-blue-400 mb-4">
+                <h2 className="text-lg font-medium text-blue-600 dark:text-blue-400 mb-2">
                     Bulk CSV Packing Slip Generator (Up to 100 Orders)
                 </h2>
+                <Link
+                    href="/bulk-csv-packing-slip"
+                    className="text-sm text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 hover:underline mb-8 block transition-colors"
+                >
+                    View detailed instructions & features &rarr;
+                </Link>
                 <p className="text-gray-500 dark:text-gray-400 mb-8 max-w-lg mx-auto">
                     Generate up to 100 packing slips instantly. Upload a CSV with your orders and get a ZIP file containing all PDFs.
                 </p>
