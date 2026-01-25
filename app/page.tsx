@@ -31,6 +31,12 @@ export default function Home() {
           }
         />
 
+        <div className="mt-6 mb-8 max-w-3xl mx-auto text-center px-4">
+          <p className="text-gray-600 dark:text-gray-300">
+            Need to generate packing slips in bulk? Upload a CSV file and instantly create packing slips for up to 100 orders at once — no account required.
+          </p>
+        </div>
+
         {/* Generator Component */}
         <Generator />
 
