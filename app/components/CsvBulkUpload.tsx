@@ -98,6 +98,10 @@ export const CsvBulkUpload = () => {
         const file = e.target.files?.[0];
         if (!file) return;
 
+        if (typeof window !== 'undefined' && (window as any).gtag) {
+            (window as any).gtag('event', 'bulk_csv_file_selected');
+        }
+
         const startTime = performance.now();
         setIsLoading(true);
         setError(null);
@@ -212,6 +216,13 @@ export const CsvBulkUpload = () => {
                             file_size_bytes: out.length,
                             duration_ms: Math.round(performance.now() - startTime)
                         });
+
+                        if (typeof window !== 'undefined' && (window as any).gtag) {
+                            (window as any).gtag('event', 'bulk_csv_generate_success', {
+                                orders_count: groupKeys.length,
+                                rows_count: rows.length
+                            });
+                        }
                     });
 
                 } catch (err: any) {

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { Hero } from "../components/Hero";
 import { FaqSection } from "../components/FaqSection";
+import { BulkCsvAnalytics, BulkCsvCta } from "../components/BulkCsvClient";
 
 export const metadata: Metadata = {
     title: "Bulk CSV Packing Slip Generator (Up to 100 Orders)",
@@ -23,7 +24,7 @@ export default function BulkCsvPage() {
             "price": "0",
             "priceCurrency": "USD"
         },
-        "featureList": "Bulk CSV upload (up to 100 orders), Generate packing slips for multiple orders at once, ZIP download"
+        "featureList": "Generate up to 100 packing slips at once, CSV upload, Automatic order grouping, ZIP download of PDFs"
     };
 
     const faqItems = [
@@ -47,6 +48,7 @@ export default function BulkCsvPage() {
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 font-sans text-gray-900 dark:text-gray-100">
+            <BulkCsvAnalytics />
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -65,12 +67,7 @@ export default function BulkCsvPage() {
                 />
 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-                    <Link
-                        href="/#bulk-csv-upload"
-                        className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1"
-                    >
-                        Upload CSV & Generate Packing Slips
-                    </Link>
+                    <BulkCsvCta />
                     <a
                         href="/sample-bulk-orders.csv"
                         download
