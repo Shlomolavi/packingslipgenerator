@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default function BulkCsvPage() {
-    const jsonLd = {
+    const softwareAppSchema = {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
         "name": "Bulk CSV Packing Slip Generator",
@@ -27,6 +27,94 @@ export default function BulkCsvPage() {
         "featureList": "Generate up to 100 packing slips at once, CSV upload, Automatic order grouping, ZIP download of PDFs"
     };
 
+    const faqSchema = {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "How many orders can I upload at once?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Up to 100 unique orders per CSV file."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Can one order include multiple items?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes. Use the same OrderNumber on multiple rows to group items into a single PDF."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Are all fields required?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Required fields must be present. Optional fields like SKU can be left blank."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Are Notes & Instructions supported?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Notes & Instructions are available for single orders only and are not supported in bulk CSV uploads."
+                }
+            }
+        ]
+    };
+
+    const howToSchema = {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "How to generate bulk packing slips from a CSV",
+        "totalTime": "PT2M",
+        "supply": {
+            "@type": "HowToSupply",
+            "name": "CSV file"
+        },
+        "tool": {
+            "@type": "HowToTool",
+            "name": "Bulk CSV Packing Slip Generator"
+        },
+        "step": [
+            {
+                "@type": "HowToStep",
+                "name": "Download the sample CSV",
+                "text": "Download the sample CSV file to get the correct headers and format.",
+                "position": 1
+            },
+            {
+                "@type": "HowToStep",
+                "name": "Fill in your orders",
+                "text": "Fill in your orders ensuring one row represents one item.",
+                "position": 2
+            },
+            {
+                "@type": "HowToStep",
+                "name": "Group items",
+                "text": "Use the same OrderNumber for multiple items in the same order.",
+                "position": 3
+            },
+            {
+                "@type": "HowToStep",
+                "name": "Upload the CSV",
+                "text": "Upload the filled CSV file to the generator platform.",
+                "position": 4
+            },
+            {
+                "@type": "HowToStep",
+                "name": "Download the ZIP",
+                "text": "Download the resulting ZIP file containing all your PDF packing slips.",
+                "position": 5
+            }
+        ]
+    };
+
+    const jsonLd = [softwareAppSchema, faqSchema, howToSchema];
+
     const faqItems = [
         {
             question: "How many orders can I upload at once?",
@@ -34,15 +122,15 @@ export default function BulkCsvPage() {
         },
         {
             question: "Can one order include multiple items?",
-            answer: "Yes. Use the same OrderNumber on multiple rows."
+            answer: "Yes. Use the same OrderNumber on multiple rows to group items into a single PDF."
         },
         {
             question: "Are all fields required?",
-            answer: "Required fields must be present. Optional fields like SKU can be left empty."
+            answer: "Required fields must be present. Optional fields like SKU can be left blank."
         },
         {
             question: "Are Notes & Instructions supported?",
-            answer: "No. Notes & Instructions are available only for single orders."
+            answer: "Notes & Instructions are available for single orders only and are not supported in bulk CSV uploads."
         }
     ];
 
@@ -89,19 +177,23 @@ export default function BulkCsvPage() {
                         <ul className="space-y-4 text-lg text-gray-600 dark:text-gray-300">
                             <li className="flex items-start gap-3">
                                 <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0 mt-1">1</span>
-                                One row = one item
+                                <div><span className="font-semibold text-gray-900 dark:text-white">Download the sample CSV.</span> Get the correct format.</div>
                             </li>
                             <li className="flex items-start gap-3">
                                 <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0 mt-1">2</span>
-                                Multiple rows with the same OrderNumber → combined into one PDF
+                                <div><span className="font-semibold text-gray-900 dark:text-white">Fill in your orders.</span> One row per item.</div>
                             </li>
                             <li className="flex items-start gap-3">
                                 <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0 mt-1">3</span>
-                                Up to 100 orders per upload
+                                <div><span className="font-semibold text-gray-900 dark:text-white">Group items.</span> Use the same OrderNumber for multiple items.</div>
                             </li>
                             <li className="flex items-start gap-3">
                                 <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0 mt-1">4</span>
-                                Output is a ZIP file containing all PDFs
+                                <div><span className="font-semibold text-gray-900 dark:text-white">Upload the CSV.</span> Select your file above.</div>
+                            </li>
+                            <li className="flex items-start gap-3">
+                                <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold rounded-full w-6 h-6 flex items-center justify-center text-sm flex-shrink-0 mt-1">5</span>
+                                <div><span className="font-semibold text-gray-900 dark:text-white">Download the ZIP.</span> Get all your PDFs instantly.</div>
                             </li>
                         </ul>
                     </section>
