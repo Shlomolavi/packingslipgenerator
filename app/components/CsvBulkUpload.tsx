@@ -232,7 +232,7 @@ export const CsvBulkUpload = () => {
     };
 
     return (
-        <section className="bg-gradient-to-br from-gray-50 to-white dark:from-zinc-900 dark:to-zinc-900/50 border-t border-gray-200 dark:border-zinc-800 p-8 sm:p-10">
+        <section id="bulk-csv-upload" className="bg-gradient-to-br from-gray-50 to-white dark:from-zinc-900 dark:to-zinc-900/50 border-t border-gray-200 dark:border-zinc-800 p-8 sm:p-10">
             <div className="max-w-3xl mx-auto text-center">
                 <div className="inline-flex items-center gap-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
                     Beta
