@@ -1,0 +1,4 @@
+OrderNumber,SenderName,SenderAddress,RecipientName,RecipientAddress,SKU,Description,Quantity,Price
+ORD-1001,Example Store,"123 Main St, New York, NY 10001",John Smith,"456 Oak Ave, Los Angeles, CA 90001",SKU-001,Sample Product One,1,49.99
+ORD-1001,Example Store,"123 Main St, New York, NY 10001",John Smith,"456 Oak Ave, Los Angeles, CA 90001",SKU-002,Sample Product Two,2,19.50
+ORD-1002,Example Store,"123 Main St, New York, NY 10001",Jane Doe,"789 Pine Rd, Austin, TX 78701",SKU-003,Another Sample Product,1,129.00

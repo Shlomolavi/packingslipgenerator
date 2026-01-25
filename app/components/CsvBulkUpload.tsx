@@ -241,6 +241,34 @@ export const CsvBulkUpload = () => {
                     Generate up to 100 packing slips instantly. Upload a CSV with your orders and get a ZIP file containing all PDFs.
                 </p>
 
+                {/* Format Instructions */}
+                <div className="mb-8 bg-blue-50 dark:bg-blue-900/20 p-5 rounded-lg border border-blue-100 dark:border-blue-800 text-sm text-left max-w-2xl mx-auto">
+                    <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">CSV format requirements</h4>
+                    <p className="text-blue-800 dark:text-blue-200 mb-3">
+                        Upload a CSV file where each row represents one item.
+                        Orders with the same <code className="bg-blue-100 dark:bg-blue-800 px-1 rounded">OrderNumber</code> will be combined into a single packing slip.
+                    </p>
+                    <div className="mb-4">
+                        <span className="font-medium text-blue-900 dark:text-blue-100 block mb-1">Required columns (in this exact order):</span>
+                        <div className="bg-white dark:bg-zinc-900 p-2 rounded border border-blue-200 dark:border-blue-800 overflow-x-auto">
+                            <code className="text-xs text-blue-700 dark:text-blue-300 whitespace-nowrap">
+                                OrderNumber, SenderName, SenderAddress, RecipientName, RecipientAddress, SKU, Description, Quantity, Price
+                            </code>
+                        </div>
+                    </div>
+                    <a
+                        href="/sample-bulk-orders.csv"
+                        download
+                        className="inline-flex items-center gap-1.5 text-blue-600 dark:text-blue-400 hover:underline font-medium hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+                            <path d="M10.75 2.75a.75.75 0 00-1.5 0v8.614L6.295 8.235a.75.75 0 10-1.09 1.03l4.25 4.5a.75.75 0 001.09 0l4.25-4.5a.75.75 0 00-1.09-1.03l-2.955 3.129V2.75z" />
+                            <path d="M3.5 12.75a.75.75 0 00-1.5 0v2.5A2.75 2.75 0 004.75 18h10.5A2.75 2.75 0 0018 15.25v-2.5a.75.75 0 00-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5z" />
+                        </svg>
+                        Download sample CSV
+                    </a>
+                </div>
+
                 <div className="bg-white dark:bg-zinc-800 p-6 rounded-xl border-2 border-dashed border-gray-300 dark:border-zinc-700 hover:border-blue-500 dark:hover:border-blue-500 transition-colors group">
                     <div className="space-y-4">
                         <div className="flex justify-center">
