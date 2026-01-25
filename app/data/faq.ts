@@ -28,6 +28,14 @@ export const faqData: {
         {
             question: "Is my data saved or uploaded anywhere?",
             answer: "No. Your data is processed entirely locally within your browser for maximum privacy. We do not upload, store, or see your customer or order information on our servers."
+        },
+        {
+            question: "Can I generate packing slips in bulk using a CSV file?",
+            answer: "Yes. You can upload a CSV file and generate packing slips for multiple orders at once. Each order is converted into a clean, print-ready packing slip automatically."
+        },
+        {
+            question: "How many orders can I generate at once with CSV upload?",
+            answer: "You can generate packing slips for up to 100 orders in a single CSV upload, making it easy to handle bulk shipments quickly."
         }
     ],
     shopify: [
