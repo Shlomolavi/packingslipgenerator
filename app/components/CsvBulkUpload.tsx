@@ -234,9 +234,12 @@ export const CsvBulkUpload = () => {
                 <div className="inline-flex items-center gap-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
                     Beta
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
                     Bulk CSV Upload
                 </h3>
+                <h2 className="text-lg font-medium text-blue-600 dark:text-blue-400 mb-4">
+                    Bulk CSV Packing Slip Generator (Up to 100 Orders)
+                </h2>
                 <p className="text-gray-500 dark:text-gray-400 mb-8 max-w-lg mx-auto">
                     Generate up to 100 packing slips instantly. Upload a CSV with your orders and get a ZIP file containing all PDFs.
                 </p>
@@ -293,9 +296,21 @@ export const CsvBulkUpload = () => {
                                     className="hidden"
                                 />
                             </label>
-                            <p className="text-xs text-gray-400 mt-2">
-                                Supported columns: OrderNumber, SenderName, RecipientName...
-                            </p>
+
+                            <div className="mt-4 text-sm text-gray-500 dark:text-gray-400 space-y-1 text-left max-w-xs mx-auto">
+                                <p>• One row = one item</p>
+                                <p>• Same OrderNumber = grouped into one PDF</p>
+                                <p>• Up to 100 orders per upload</p>
+                                <p>• Output is a ZIP containing all PDFs</p>
+                            </div>
+
+                            <a
+                                href="/sample-bulk-orders.csv"
+                                download
+                                className="inline-block mt-4 text-blue-600 dark:text-blue-400 hover:underline font-medium text-sm"
+                            >
+                                Download sample CSV (up to 100 orders)
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -312,6 +327,25 @@ export const CsvBulkUpload = () => {
                     </div>
                 )}
             </div>
-        </section>
+
+            {/* Local FAQ */}
+            <div className="max-w-3xl mx-auto mt-12 text-left border-t border-gray-200 dark:border-zinc-800 pt-8">
+                <h4 className="font-bold text-gray-900 dark:text-white mb-6">Common Questions</h4>
+                <div className="grid gap-6 sm:grid-cols-3">
+                    <div>
+                        <p className="font-medium text-gray-900 dark:text-gray-100 mb-1">How many orders?</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">Upload up to 100 orders at once in a single CSV file.</p>
+                    </div>
+                    <div>
+                        <p className="font-medium text-gray-900 dark:text-gray-100 mb-1">Empty fields?</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">Optional fields like SKU can be left blank. Required fields must be filled.</p>
+                    </div>
+                    <div>
+                        <p className="font-medium text-gray-900 dark:text-gray-100 mb-1">Multiple items?</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">Yes! Use the same OrderNumber for multiple rows to group them.</p>
+                    </div>
+                </div>
+            </div>
+        </section >
     );
 };
