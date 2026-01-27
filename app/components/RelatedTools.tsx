@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { seoPages } from "../data/seo_pages";
+import { logEvent } from "../actions/analytics";
 
 interface RelatedToolsProps {
     currentSlug?: string;
@@ -72,6 +75,7 @@ export const RelatedTools = ({ currentSlug }: RelatedToolsProps) => {
                             <Link
                                 key={page.slug}
                                 href={`/${page.slug}`}
+                                onClick={() => logEvent('footer_navigation_clicked', { section: 'popular', destination_type: 'core', destination: page.slug, tool_mode: 'unknown' })}
                                 className="text-blue-600 dark:text-blue-400 hover:underline hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
                                 title={page.title}
                             >
@@ -91,6 +95,7 @@ export const RelatedTools = ({ currentSlug }: RelatedToolsProps) => {
                             <Link
                                 key={page.slug}
                                 href={`/${page.slug}`}
+                                onClick={() => logEvent('footer_navigation_clicked', { section: 'contextual', destination_type: isPlatformPage ? 'platform' : 'feature', destination: page.slug, tool_mode: 'unknown' })}
                                 className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition-colors"
                             >
                                 {page.h1.replace("Packing Slip Generator", "").replace("Packing Slip", "").trim() || page.h1}
@@ -109,6 +114,7 @@ export const RelatedTools = ({ currentSlug }: RelatedToolsProps) => {
                             <Link
                                 key={page.slug}
                                 href={`/${page.slug}`}
+                                onClick={() => logEvent('footer_navigation_clicked', { section: 'resources', destination_type: 'discovery', destination: page.slug, tool_mode: 'unknown' })}
                                 className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition-colors"
                             >
                                 {page.h1}
@@ -116,6 +122,7 @@ export const RelatedTools = ({ currentSlug }: RelatedToolsProps) => {
                         ))}
                         <Link
                             href="/bulk-csv-packing-slip"
+                            onClick={() => logEvent('footer_navigation_clicked', { section: 'resources', destination_type: 'bulk', destination: 'bulk', tool_mode: 'unknown' })}
                             className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition-colors"
                         >
                             Bulk Packing Slip Generator (CSV Upload)

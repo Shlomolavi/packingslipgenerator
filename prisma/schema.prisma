@@ -1,0 +1,16 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Event {
+  id              String   @id @default(uuid())
+  ts              DateTime @default(now())
+  event_name      String
+  tool_mode       String
+  landing_context String
+  properties      String
+}
