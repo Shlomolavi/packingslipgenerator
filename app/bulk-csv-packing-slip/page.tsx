@@ -6,7 +6,7 @@ import { BulkCsvAnalytics, BulkCsvCta } from "../components/BulkCsvClient";
 
 export const metadata: Metadata = {
     title: "Bulk CSV Packing Slip Generator (Up to 100 Orders)",
-    description: "Generate up to 100 packing slips at once. Upload a CSV, group items by order number, and download all PDFs in one ZIP. Free & instant.",
+    description: "Upload a CSV file and instantly generate up to 100 packing slips. Orders with the same OrderNumber are grouped into one PDF. Download all PDFs as a ZIP file.",
     alternates: {
         canonical: "https://packingslipgenerator.com/bulk-csv-packing-slip",
     },
