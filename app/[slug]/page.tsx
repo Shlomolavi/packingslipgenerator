@@ -72,7 +72,7 @@ export default async function SeoPage({ params }: { params: Promise<{ slug: stri
 
                 <div className="mt-6 mb-8 max-w-3xl mx-auto text-center px-4">
                     <p className="text-gray-600 dark:text-gray-300">
-                        Need to generate packing slips in bulk? Upload a CSV file and instantly create packing slips for up to 100 orders at once — no account required.
+                        Need to <Link href="/bulk-csv-packing-slip" className="text-blue-600 hover:underline">generate packing slips in bulk</Link>? Upload a CSV file and instantly create packing slips for up to 100 orders at once — no account required.
                     </p>
                 </div>
 
