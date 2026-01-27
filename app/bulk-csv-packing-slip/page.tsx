@@ -33,18 +33,26 @@ export default function BulkCsvPage() {
         "mainEntity": [
             {
                 "@type": "Question",
-                "name": "How many orders can I upload at once?",
+                "name": "How does CSV grouping work?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Up to 100 unique orders per CSV file."
+                    "text": "The generator looks at the OrderNumber column. If multiple rows share the same OrderNumber, they are automatically grouped into a single packing slip PDF with multiple line items."
                 }
             },
             {
                 "@type": "Question",
-                "name": "Can one order include multiple items?",
+                "name": "Does the same OrderNumber create one PDF?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Yes. Use the same OrderNumber on multiple rows to group items into a single PDF."
+                    "text": "Yes. Duplicate OrderNumber values indicate items belonging to the same order. These are combined into one document."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How many orders can I upload at once?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "You can upload a CSV containing up to 100 unique orders. If you have more, please split them into multiple CSV files."
                 }
             },
             {
@@ -52,7 +60,7 @@ export default function BulkCsvPage() {
                 "name": "Are all fields required?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Required fields must be present. Optional fields like SKU can be left blank."
+                    "text": "Required fields (OrderNumber, Sender/Recipient details) must be present. Optional fields like SKU or Weight can be left blank."
                 }
             },
             {
@@ -117,16 +125,20 @@ export default function BulkCsvPage() {
 
     const faqItems = [
         {
-            question: "How many orders can I upload at once?",
-            answer: "Up to 100 unique orders per CSV file."
+            question: "How does CSV grouping work?",
+            answer: "The generator looks at the OrderNumber column. If multiple rows share the same OrderNumber, they are automatically grouped into a single packing slip PDF with multiple line items."
         },
         {
-            question: "Can one order include multiple items?",
-            answer: "Yes. Use the same OrderNumber on multiple rows to group items into a single PDF."
+            question: "Does the same OrderNumber create one PDF?",
+            answer: "Yes. Duplicate OrderNumber values indicate items belonging to the same order. These are combined into one document."
+        },
+        {
+            question: "How many orders can I upload at once?",
+            answer: "You can upload a CSV containing up to 100 unique orders. If you have more, please split them into multiple CSV files."
         },
         {
             question: "Are all fields required?",
-            answer: "Required fields must be present. Optional fields like SKU can be left blank."
+            answer: "Required fields (OrderNumber, Sender/Recipient details) must be present. Optional fields like SKU or Weight can be left blank."
         },
         {
             question: "Are Notes & Instructions supported?",
@@ -148,8 +160,7 @@ export default function BulkCsvPage() {
                     title="Bulk CSV Packing Slip Generator"
                     intro={
                         <>
-                            Upload a CSV file and instantly generate up to 100 packing slips at once.
-                            Orders with the same OrderNumber are automatically grouped into a single PDF.
+                            Built for high-volume sellers, warehouses, and fulfillment teams. Stop creating packing slips manually—upload a CSV file to instantly generate up to 100 professional PDFs at once. Orders with the same OrderNumber are automatically grouped into one document, and all files are delivered in a single ZIP download.
                         </>
                     }
                 />
@@ -250,8 +261,8 @@ export default function BulkCsvPage() {
 
                         <div className="bg-white dark:bg-zinc-900 p-6 rounded-xl border border-blue-200 dark:border-blue-700 shadow-sm mb-6">
                             <h3 className="font-bold text-lg mb-2 text-gray-900 dark:text-white">Note: Notes & Instructions</h3>
-                            <p className="text-gray-600 dark:text-gray-300">
-                                Notes & Instructions are available for single orders only and are not supported in bulk CSV uploads.
+                            <p className="text-gray-600 dark:text-gray-300 font-medium">
+                                “Notes & Instructions are available for single orders only and are not supported in bulk CSV uploads.”
                             </p>
                         </div>
 
