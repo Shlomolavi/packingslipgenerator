@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import { PackingSlipPDF } from "./PackingSlipPDF";
 import { CsvBulkUpload } from "./CsvBulkUpload";
-import { logEvent } from "../actions/analytics";
 
 // Dynamically import PDFDownloadLink to avoid SSR issues
 const PDFDownloadLink = dynamic(
@@ -77,8 +76,6 @@ export default function Generator() {
     // Load persistence
     useEffect(() => {
         setIsClient(true);
-
-        logEvent('single_order_started', { tool_mode: 'single' });
 
         // Page Size
         const savedSize = localStorage.getItem('packingSlip_pageSize');
@@ -270,7 +267,6 @@ export default function Generator() {
                                     />
                                 }
                                 onError={(error: any) => setPdfError(error.message || 'Failed to generate PDF')}
-                                onClick={() => logEvent('single_order_generated', { tool_mode: 'single' })}
                                 fileName={`packing-slip-${shipment.orderNumber || 'draft'}.pdf`}
                                 className="bg-white text-blue-700 hover:bg-blue-50 px-6 py-2.5 rounded-full font-bold shadow-lg shadow-blue-900/20 transition-all hover:scale-105 active:scale-95 data-[loading]:opacity-80 data-[loading]:cursor-wait whitespace-nowrap min-w-[160px] text-center"
                             >

@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Papa from 'papaparse';
@@ -7,7 +5,6 @@ import * as fflate from 'fflate';
 import { pdf } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
 import { PackingSlipPDF } from './PackingSlipPDF';
-import { logEvent } from '../actions/analytics';
 
 // Define the expected CSV row structure
 interface CsvRow {
@@ -105,8 +102,6 @@ export const CsvBulkUpload = () => {
             (window as any).gtag('event', 'bulk_csv_file_selected');
         }
 
-        logEvent('bulk_csv_uploaded', { tool_mode: 'bulk' });
-
         const startTime = performance.now();
         setIsLoading(true);
         setError(null);
@@ -136,7 +131,6 @@ export const CsvBulkUpload = () => {
                     setError('Limit exceeded: Max 100 rows per batch.');
                     setIsLoading(false);
                     sendTelemetry({ success: false, error: 'Limit exceeded', rows_count: rows.length });
-                    logEvent('bulk_limit_hit', { tool_mode: 'bulk', rows: rows.length });
                     return;
                 }
 
@@ -165,7 +159,6 @@ export const CsvBulkUpload = () => {
 
                     const groupKeys = Object.keys(groups);
                     setStatus(`Generating ${groupKeys.length} PDFs from ${rows.length} items...`);
-                    logEvent('bulk_generate_clicked', { tool_mode: 'bulk' });
 
                     const zipData: fflate.AsyncZippable = {};
                     const filenameCounts: Record<string, number> = {};
@@ -214,7 +207,6 @@ export const CsvBulkUpload = () => {
                         saveAs(zipBlob, 'bulk-packing-slips.zip');
                         setStatus('Done! Download started.');
                         setIsLoading(false);
-                        logEvent('zip_downloaded', { tool_mode: 'bulk' });
 
                         // Success Telemetry
                         sendTelemetry({
@@ -231,11 +223,6 @@ export const CsvBulkUpload = () => {
                                 rows_count: rows.length
                             });
                         }
-                        logEvent('bulk_generate_success', {
-                            tool_mode: 'bulk',
-                            orders_count: groupKeys.length,
-                            rows_count: rows.length
-                        });
                     });
 
                 } catch (err: any) {
