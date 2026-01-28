@@ -43,6 +43,13 @@ export default async function InternalMetricsPage({
                     <div>
                         <Row label="DB Path" val={debug.dbPath} />
                         <Row label="Total Events" val={debug.totalEvents} />
+
+                        <div className="mt-4 pt-4 border-t border-yellow-200">
+                            <h3 className="text-xs font-bold text-gray-500 uppercase mb-1">Last Footer Event Props</h3>
+                            <pre className="text-[10px] text-gray-600 bg-white p-2 rounded border border-yellow-100 overflow-x-auto">
+                                {debug.lastFooterEvent ? JSON.stringify(JSON.parse((debug.lastFooterEvent as any).properties), null, 2) : 'None'}
+                            </pre>
+                        </div>
                     </div>
                     <div>
                         <h3 className="text-xs font-bold text-gray-500 uppercase mb-2">Recent Events (Last 10)</h3>
@@ -86,7 +93,8 @@ export default async function InternalMetricsPage({
 
                 {/* Footer Discovery */}
                 <Card title="Footer Discovery (7d)">
-                    <Row label="Footer -> Bulk Clicks" val={metrics.footerToBulk.d7} />
+                    <Row label="Footer -> Bulk (Mode)" val={metrics.footerToBulk.byMode} />
+                    <Row label="Footer -> Bulk (Props)" val={metrics.footerToBulk.byProps} />
                 </Card>
 
             </div>

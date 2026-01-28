@@ -15,7 +15,7 @@ export interface DashboardMetrics {
         d14: number;
     };
     ordersDist: Record<string, number>;
-    footerToBulk: { d7: number };
+    footerToBulk: { byMode: number, byProps: number };
 }
 
 export function getDashboardMetrics(): DashboardMetrics {
@@ -68,16 +68,18 @@ export function getDashboardMetrics(): DashboardMetrics {
     });
 
     // Footer -> Bulk (7d)
+    const footerBulkMode = count('footer_navigation_clicked', d7, "tool_mode = 'bulk'");
+
     const footerEvents = db.prepare(`
         SELECT properties FROM events 
         WHERE event_name = 'footer_navigation_clicked' AND ts >= ?
     `).all(d7) as { properties: string }[];
 
-    let footerBulkCount = 0;
+    let footerBulkProps = 0;
     footerEvents.forEach(evt => {
         try {
             const props = JSON.parse(evt.properties);
-            if (props.destination_type === 'bulk') footerBulkCount++;
+            if (props.destination_type === 'bulk') footerBulkProps++;
         } catch (e) { }
     });
 
@@ -91,7 +93,7 @@ export function getDashboardMetrics(): DashboardMetrics {
             d14: bulkUploads14
         },
         ordersDist: dist,
-        footerToBulk: { d7: footerBulkCount }
+        footerToBulk: { byMode: footerBulkMode, byProps: footerBulkProps }
     };
 }
 
@@ -99,10 +101,12 @@ export function getDebugInfo() {
     const db = getDb();
     const total = db.prepare('SELECT COUNT(*) as c FROM events').get() as { c: number };
     const recent = db.prepare('SELECT event_name, ts, tool_mode FROM events ORDER BY ts DESC LIMIT 10').all();
+    const lastFooter = db.prepare("SELECT id, ts, properties FROM events WHERE event_name = 'footer_navigation_clicked' ORDER BY ts DESC LIMIT 1").get();
 
     return {
         dbPath: path.join(process.cwd(), 'analytics.db'),
         totalEvents: total.c,
-        recentEvents: recent
+        recentEvents: recent,
+        lastFooterEvent: lastFooter || null
     };
 }
