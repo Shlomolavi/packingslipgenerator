@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import { PackingSlipPDF } from "./PackingSlipPDF";
 import { CsvBulkUpload } from "./CsvBulkUpload";
-import { logEvent } from "../actions/analytics";
+import { logEventClient } from "../../lib/client-logger";
 import { usePathname } from "next/navigation";
 
 // Dynamically import PDFDownloadLink to avoid SSR issues
@@ -278,7 +278,7 @@ export default function Generator() {
                                 }
                                 onError={(error: any) => setPdfError(error.message || 'Failed to generate PDF')}
                                 onClick={() => {
-                                    logEvent('single_order_generated', {
+                                    logEventClient('single_order_generated', {
                                         tool_mode: 'single',
                                         landing_context: getLandingContext(),
                                         pdf_count: 1,

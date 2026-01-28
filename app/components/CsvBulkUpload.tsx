@@ -5,7 +5,7 @@ import * as fflate from 'fflate';
 import { pdf } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
 import { PackingSlipPDF } from './PackingSlipPDF';
-import { logEvent } from '../actions/analytics';
+import { logEventClient } from '../../lib/client-logger';
 import { usePathname } from 'next/navigation';
 
 // Define the expected CSV row structure
@@ -170,7 +170,7 @@ export const CsvBulkUpload = () => {
                     const groupKeys = Object.keys(groups);
 
                     const hasOptional = headers.some(h => !requiredColumns.includes(h));
-                    logEvent('bulk_csv_uploaded', {
+                    logEventClient('bulk_csv_uploaded', {
                         tool_mode: 'bulk',
                         landing_context: getLandingContext(),
                         rows_count: rows.length,
