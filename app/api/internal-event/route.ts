@@ -11,7 +11,8 @@ const ALLOWED_EVENTS = new Set([
     "bulk_limit_hit",
     "upgrade_cta_viewed",
     "upgrade_cta_clicked",
-    "single_order_started"
+    "single_order_started",
+    "bulk_csv_upload_success"
 ]);
 
 export async function POST(req: NextRequest) {

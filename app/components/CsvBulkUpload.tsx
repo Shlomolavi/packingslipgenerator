@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Link from 'next/link';
 import Papa from 'papaparse';
 import * as fflate from 'fflate';
@@ -69,6 +69,7 @@ export const CsvBulkUpload = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [status, setStatus] = useState<string | null>(null);
+    const successLoggedRef = useRef<boolean>(false);
 
     const pathname = usePathname();
     const getLandingContext = () => {
@@ -116,6 +117,7 @@ export const CsvBulkUpload = () => {
         setIsLoading(true);
         setError(null);
         setStatus('Parsing CSV...');
+        successLoggedRef.current = false;
 
         Papa.parse<CsvRow>(file, {
             header: true,
@@ -170,14 +172,7 @@ export const CsvBulkUpload = () => {
                     const groupKeys = Object.keys(groups);
 
                     const hasOptional = headers.some(h => !requiredColumns.includes(h));
-                    logEventClient('bulk_csv_uploaded', {
-                        tool_mode: 'bulk',
-                        landing_context: getLandingContext(),
-                        rows_count: rows.length,
-                        orders_count: groupKeys.length,
-                        has_optional_fields: hasOptional,
-                        csv_valid: true
-                    });
+                    // Event firing moved to completion success status below (analytics success)
 
                     setStatus(`Generating ${groupKeys.length} PDFs from ${rows.length} items...`);
 
@@ -229,7 +224,17 @@ export const CsvBulkUpload = () => {
                         setStatus('Done! Download started.');
                         setIsLoading(false);
 
-                        // Success Telemetry
+                        // Success Telemetry (Internal)
+                        if (!successLoggedRef.current) {
+                            logEventClient('bulk_csv_upload_success', {
+                                orders_count: groupKeys.length,
+                                source: 'bulk_page',
+                                rows_count: rows.length
+                            });
+                            successLoggedRef.current = true;
+                        }
+
+                        // Success Telemetry (External/Existing)
                         sendTelemetry({
                             success: true,
                             orders_count: groupKeys.length,

@@ -32,8 +32,8 @@ export function getDashboardMetrics(): DashboardMetrics {
     };
 
     // Overview
-    const bulkUploads7 = count('bulk_csv_uploaded', d7);
-    const bulkUploads14 = count('bulk_csv_uploaded', d14);
+    const bulkUploads7 = count('bulk_csv_upload_success', d7);
+    const bulkUploads14 = count('bulk_csv_upload_success', d14);
     const singleGenerated7 = count('single_order_generated', d7);
     const singleGenerated14 = count('single_order_generated', d14);
 
@@ -46,7 +46,7 @@ export function getDashboardMetrics(): DashboardMetrics {
     // Distribution (7d)
     const bulkEvents = db.prepare(`
         SELECT properties FROM events 
-        WHERE event_name = 'bulk_csv_uploaded' AND ts >= ?
+        WHERE event_name = 'bulk_csv_upload_success' AND ts >= ?
     `).all(d7) as { properties: string }[];
 
     const dist: Record<string, number> = {

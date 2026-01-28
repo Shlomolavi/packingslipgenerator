@@ -11,6 +11,7 @@ export const logEventClient = async (eventName: string, payload: any = {}) => {
                 event_name: eventName,
                 ...payload
             }),
+            keepalive: true,
         });
     } catch (error) {
         // Silent fail on client side to avoid disrupting user experience
