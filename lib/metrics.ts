@@ -1,4 +1,5 @@
 import { getDb } from './db';
+import path from 'path';
 
 // Time helpers
 const NOW = () => new Date();
@@ -91,5 +92,17 @@ export function getDashboardMetrics(): DashboardMetrics {
         },
         ordersDist: dist,
         footerToBulk: { d7: footerBulkCount }
+    };
+}
+
+export function getDebugInfo() {
+    const db = getDb();
+    const total = db.prepare('SELECT COUNT(*) as c FROM events').get() as { c: number };
+    const recent = db.prepare('SELECT event_name, ts, tool_mode FROM events ORDER BY ts DESC LIMIT 10').all();
+
+    return {
+        dbPath: path.join(process.cwd(), 'analytics.db'),
+        totalEvents: total.c,
+        recentEvents: recent
     };
 }

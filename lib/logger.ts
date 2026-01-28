@@ -30,7 +30,7 @@ export function logEvent(event_name: string, payload: EventPayload) {
             JSON.stringify(rest)
         );
     } catch (error) {
-        // Analytics must be fail-safe. Do not throw.
-        console.error('Analytics logEvent failed:', error);
+        // Analytics must be fail-safe. Do not throw, but log error for debugging.
+        console.error('[Analytics Error] Failed to log event:', event_name, error);
     }
 }
