@@ -65,6 +65,14 @@ const mapGroupToProps = (rows: CsvRow[]) => {
     };
 };
 
+const getOrderBucket = (count: number) => {
+    if (count <= 3) return '1-3';
+    if (count <= 10) return '4-10';
+    if (count <= 25) return '11-25';
+    if (count <= 50) return '26-50';
+    return '51-100';
+};
+
 export const CsvBulkUpload = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -227,9 +235,11 @@ export const CsvBulkUpload = () => {
                         // Success Telemetry (Internal)
                         if (!successLoggedRef.current) {
                             logEventClient('bulk_csv_upload_success', {
+                                tool_mode: 'bulk',
                                 orders_count: groupKeys.length,
-                                source: 'bulk_page',
-                                rows_count: rows.length
+                                rows_count: rows.length,
+                                order_size_bucket: getOrderBucket(groupKeys.length),
+                                landing_context: getLandingContext()
                             });
                             successLoggedRef.current = true;
                         }
