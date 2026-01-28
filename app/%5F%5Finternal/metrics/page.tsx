@@ -12,15 +12,19 @@ export default async function InternalMetricsPage({
     // 1. Protection (MVP)
     const expectedToken = process.env.INTERNAL_METRICS_TOKEN;
     if (!expectedToken) {
-        // If not configured, deny all by default for safety
         return notFound();
     }
 
+    // Await params and headers (Next.js 15/16 requirement)
     const sp = await searchParams;
-    const queryToken = sp.token;
-    const headerToken = (await headers()).get("x-internal-token");
+    const queryToken = typeof sp.token === 'string' ? sp.token : undefined;
 
-    if (queryToken !== expectedToken && headerToken !== expectedToken) {
+    const headerList = await headers();
+    const headerToken = headerList.get("x-internal-token");
+
+    const token = queryToken || headerToken;
+
+    if (token !== expectedToken) {
         return notFound();
     }
 
