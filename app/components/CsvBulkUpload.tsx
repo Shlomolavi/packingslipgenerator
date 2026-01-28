@@ -5,6 +5,8 @@ import * as fflate from 'fflate';
 import { pdf } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
 import { PackingSlipPDF } from './PackingSlipPDF';
+import { logEvent } from '../actions/analytics';
+import { usePathname } from 'next/navigation';
 
 // Define the expected CSV row structure
 interface CsvRow {
@@ -67,6 +69,14 @@ export const CsvBulkUpload = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [status, setStatus] = useState<string | null>(null);
+
+    const pathname = usePathname();
+    const getLandingContext = () => {
+        if (pathname === "/bulk-csv-packing-slip") return "bulk_landing";
+        if (pathname === "/") return "home";
+        if (pathname) return "tool_other";
+        return "unknown";
+    };
 
     const requiredColumns = [
         'OrderNumber',
@@ -158,6 +168,17 @@ export const CsvBulkUpload = () => {
                     });
 
                     const groupKeys = Object.keys(groups);
+
+                    const hasOptional = headers.some(h => !requiredColumns.includes(h));
+                    logEvent('bulk_csv_uploaded', {
+                        tool_mode: 'bulk',
+                        landing_context: getLandingContext(),
+                        rows_count: rows.length,
+                        orders_count: groupKeys.length,
+                        has_optional_fields: hasOptional,
+                        csv_valid: true
+                    });
+
                     setStatus(`Generating ${groupKeys.length} PDFs from ${rows.length} items...`);
 
                     const zipData: fflate.AsyncZippable = {};

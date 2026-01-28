@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import { PackingSlipPDF } from "./PackingSlipPDF";
 import { CsvBulkUpload } from "./CsvBulkUpload";
+import { logEvent } from "../actions/analytics";
+import { usePathname } from "next/navigation";
 
 // Dynamically import PDFDownloadLink to avoid SSR issues
 const PDFDownloadLink = dynamic(
@@ -43,6 +45,14 @@ export default function Generator() {
     const [items, setItems] = useState<Item[]>([
         { id: "1", sku: "", description: "", quantity: 1, unitPrice: 0 },
     ]);
+
+    const pathname = usePathname();
+    const getLandingContext = () => {
+        if (pathname === "/bulk-csv-packing-slip") return "bulk_landing";
+        if (pathname === "/") return "home";
+        if (pathname) return "tool_other";
+        return "unknown";
+    };
 
     // Page Size State with Persistence
     const [pageSize, setPageSize] = useState<'A4' | 'LETTER'>('A4');
@@ -267,6 +277,14 @@ export default function Generator() {
                                     />
                                 }
                                 onError={(error: any) => setPdfError(error.message || 'Failed to generate PDF')}
+                                onClick={() => {
+                                    logEvent('single_order_generated', {
+                                        tool_mode: 'single',
+                                        landing_context: getLandingContext(),
+                                        pdf_count: 1,
+                                        used_notes: !!notes.trim()
+                                    });
+                                }}
                                 fileName={`packing-slip-${shipment.orderNumber || 'draft'}.pdf`}
                                 className="bg-white text-blue-700 hover:bg-blue-50 px-6 py-2.5 rounded-full font-bold shadow-lg shadow-blue-900/20 transition-all hover:scale-105 active:scale-95 data-[loading]:opacity-80 data-[loading]:cursor-wait whitespace-nowrap min-w-[160px] text-center"
                             >
