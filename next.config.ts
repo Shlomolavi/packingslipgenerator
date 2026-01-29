@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/__internal/metrics',
-        destination: '/internal-metrics',
+        destination: '/internal/metrics',
       },
     ];
   },
