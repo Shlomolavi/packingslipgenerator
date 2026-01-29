@@ -1,9 +1,12 @@
-import { getDb } from './db';
+import { getAllEvents } from './db';
 import path from 'path';
 
 // Time helpers
 const NOW = () => new Date();
-const DAYS_AGO = (days: number) => new Date(NOW().getTime() - days * 24 * 60 * 60 * 1000).toISOString();
+const DAYS_AGO = (days: number) => {
+    const d = new Date(NOW().getTime() - days * 24 * 60 * 60 * 1000);
+    return d.toISOString();
+};
 
 export interface DashboardMetrics {
     overview: {
@@ -19,16 +22,18 @@ export interface DashboardMetrics {
 }
 
 export function getDashboardMetrics(): DashboardMetrics {
-    const db = getDb();
+    const events = getAllEvents();
     const d7 = DAYS_AGO(7);
     const d14 = DAYS_AGO(14);
 
     // Helpers
-    const count = (event: string, since: string, filter?: string) => {
-        let sql = `SELECT COUNT(*) as c FROM events WHERE event_name = ? AND ts >= ?`;
-        if (filter) sql += ` AND ${filter}`;
-        const row = db.prepare(sql).get(event, since) as { c: number };
-        return row.c;
+    const count = (eventName: string, since: string, filterFn?: (e: any) => boolean) => {
+        return events.filter(e => {
+            if (e.event_name !== eventName) return false;
+            if (e.ts < since) return false;
+            if (filterFn && !filterFn(e)) return false;
+            return true;
+        }).length;
     };
 
     // Overview
@@ -37,17 +42,8 @@ export function getDashboardMetrics(): DashboardMetrics {
     const singleGenerated7 = count('single_order_generated', d7);
     const singleGenerated14 = count('single_order_generated', d14);
 
-    // Bulk Funnel (Using uploads as top of funnel here as requested)
-    // The prompt asks for "bulk_csv_uploaded" count for funnel.
-    // If we had more steps wired, we'd add them, but for now just this one is requested/wired fully in previous step?
-    // Step 2 wired: single_order_generated, bulk_csv_uploaded, footer_navigation_clicked.
-    // So funnel is just the upload count for now.
-
     // Distribution (7d)
-    const bulkEvents = db.prepare(`
-        SELECT properties FROM events 
-        WHERE event_name = 'bulk_csv_upload_success' AND ts >= ?
-    `).all(d7) as { properties: string }[];
+    const bulkEvents = events.filter(e => e.event_name === 'bulk_csv_upload_success' && e.ts >= d7);
 
     const dist: Record<string, number> = {
         '1-3': 0, '4-10': 0, '11-25': 0, '26-50': 0, '51-100': 0
@@ -68,13 +64,9 @@ export function getDashboardMetrics(): DashboardMetrics {
     });
 
     // Footer -> Bulk (7d)
-    const footerBulkMode = count('footer_navigation_clicked', d7, "tool_mode = 'bulk'");
+    const footerBulkMode = count('footer_navigation_clicked', d7, (e) => e.tool_mode === 'bulk');
 
-    const footerEvents = db.prepare(`
-        SELECT properties FROM events 
-        WHERE event_name = 'footer_navigation_clicked' AND ts >= ?
-    `).all(d7) as { properties: string }[];
-
+    const footerEvents = events.filter(e => e.event_name === 'footer_navigation_clicked' && e.ts >= d7);
     let footerBulkProps = 0;
     footerEvents.forEach(evt => {
         try {
@@ -98,14 +90,18 @@ export function getDashboardMetrics(): DashboardMetrics {
 }
 
 export function getDebugInfo() {
-    const db = getDb();
-    const total = db.prepare('SELECT COUNT(*) as c FROM events').get() as { c: number };
-    const recent = db.prepare('SELECT event_name, ts, tool_mode FROM events ORDER BY ts DESC LIMIT 10').all();
-    const lastFooter = db.prepare("SELECT id, ts, properties FROM events WHERE event_name = 'footer_navigation_clicked' ORDER BY ts DESC LIMIT 1").get();
+    // Return safe debug info
+    const events = getAllEvents();
+
+    // Recent events: Sort by TS desc, limit 10
+    const sorted = [...events].sort((a, b) => b.ts.localeCompare(a.ts));
+    const recent = sorted.slice(0, 10);
+
+    const lastFooter = sorted.find(e => e.event_name === 'footer_navigation_clicked');
 
     return {
-        dbPath: path.join(process.cwd(), 'analytics.db'),
-        totalEvents: total.c,
+        dbPath: 'In-Memory (Ephemeral)',
+        totalEvents: events.length,
         recentEvents: recent,
         lastFooterEvent: lastFooter || null
     };

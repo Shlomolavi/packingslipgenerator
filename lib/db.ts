@@ -1,29 +1,39 @@
-import Database from 'better-sqlite3';
-import path from 'path';
+// Simple in-memory storage for MVP production safety
+// Note: This data is ephemeral and will reset on server restarts/lambda cold starts.
+// This is acceptable for the current user requirement.
 
-// Singleton for DB connection
-let db: Database.Database | undefined;
+export interface AnalyticsEvent {
+    id: string;
+    ts: string;
+    event_name: string;
+    tool_mode: string;
+    landing_context: string;
+    properties: string; // JSON string
+}
+
+// Global store
+const events: AnalyticsEvent[] = [];
 
 export function getDb() {
-    if (db) return db;
+    return {
+        // Mocking the "prepare" interface used by callers roughly, or better:
+        // changing the callers directly. I will change the callers to use this object directly
+        // via helper methods exposed here, OR I will just export the array.
+        // But to minimize caller churn, maybe I can expose a clear API.
 
-    const dbPath = path.join(process.cwd(), 'analytics.db');
-    db = new Database(dbPath);
+        // Actually, let's just export the accessors.
+        events
+    };
+}
 
-    // Enable WAL mode for better concurrency
-    db.pragma('journal_mode = WAL');
+export function insertEvent(evt: AnalyticsEvent) {
+    events.push(evt);
+    // Limit to 1000 events to prevent memory leak
+    if (events.length > 1000) {
+        events.shift();
+    }
+}
 
-    // Initialize Schema
-    db.exec(`
-        CREATE TABLE IF NOT EXISTS events (
-            id TEXT PRIMARY KEY,
-            ts TEXT NOT NULL,
-            event_name TEXT NOT NULL,
-            tool_mode TEXT NOT NULL,
-            landing_context TEXT NOT NULL,
-            properties TEXT NOT NULL
-        )
-    `);
-
-    return db;
+export function getAllEvents() {
+    return events;
 }
