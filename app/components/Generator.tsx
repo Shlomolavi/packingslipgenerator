@@ -278,7 +278,7 @@ export default function Generator() {
                                 }
                                 onError={(error: any) => setPdfError(error.message || 'Failed to generate PDF')}
                                 onClick={() => {
-                                    logEventClient('single_order_generated', {
+                                    logEventClient('single_pdf_generated', {
                                         tool_mode: 'single',
                                         landing_context: getLandingContext(),
                                         pdf_count: 1,

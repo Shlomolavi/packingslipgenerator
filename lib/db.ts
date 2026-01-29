@@ -1,6 +1,5 @@
-// Simple in-memory storage for MVP production safety
-// Note: This data is ephemeral and will reset on server restarts/lambda cold starts.
-// This is acceptable for the current user requirement.
+// Simple in-memory storage for MVP production safety (Hardened)
+// Uses globalThis to survive module reloading in dev/some serverless contexts
 
 export interface AnalyticsEvent {
     id: string;
@@ -11,19 +10,17 @@ export interface AnalyticsEvent {
     properties: string; // JSON string
 }
 
-// Global store
-const events: AnalyticsEvent[] = [];
+// Global augmentation
+const globalStore = globalThis as unknown as { _analyticsEvents: AnalyticsEvent[] };
+
+if (!globalStore._analyticsEvents) {
+    globalStore._analyticsEvents = [];
+}
+
+const events = globalStore._analyticsEvents;
 
 export function getDb() {
-    return {
-        // Mocking the "prepare" interface used by callers roughly, or better:
-        // changing the callers directly. I will change the callers to use this object directly
-        // via helper methods exposed here, OR I will just export the array.
-        // But to minimize caller churn, maybe I can expose a clear API.
-
-        // Actually, let's just export the accessors.
-        events
-    };
+    return { events };
 }
 
 export function insertEvent(evt: AnalyticsEvent) {

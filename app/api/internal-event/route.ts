@@ -12,7 +12,8 @@ const ALLOWED_EVENTS = new Set([
     "upgrade_cta_viewed",
     "upgrade_cta_clicked",
     "single_order_started",
-    "bulk_csv_upload_success"
+    "bulk_csv_upload_success",
+    "single_pdf_generated"
 ]);
 
 export async function POST(req: NextRequest) {
@@ -25,6 +26,7 @@ export async function POST(req: NextRequest) {
         }
 
         // Server-side logging to DB
+        console.log(`[API/InternalEvent] Received: ${event_name}`, payload);
         logEvent(event_name, payload);
 
         return NextResponse.json({ success: true });

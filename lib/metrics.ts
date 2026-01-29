@@ -39,8 +39,8 @@ export function getDashboardMetrics(): DashboardMetrics {
     // Overview
     const bulkUploads7 = count('bulk_csv_upload_success', d7);
     const bulkUploads14 = count('bulk_csv_upload_success', d14);
-    const singleGenerated7 = count('single_order_generated', d7);
-    const singleGenerated14 = count('single_order_generated', d14);
+    const singleGenerated7 = count('single_pdf_generated', d7);
+    const singleGenerated14 = count('single_pdf_generated', d14);
 
     // Distribution (7d)
     const bulkEvents = events.filter(e => e.event_name === 'bulk_csv_upload_success' && e.ts >= d7);
