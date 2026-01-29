@@ -29,8 +29,8 @@ export default async function InternalMetricsPage({
     }
 
     // 2. Fetch Data
-    const metrics = getDashboardMetrics();
-    const debug = getDebugInfo();
+    const metrics = await getDashboardMetrics();
+    const debug = await getDebugInfo();
 
     // 3. Render
     return (

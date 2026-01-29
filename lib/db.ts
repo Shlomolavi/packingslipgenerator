@@ -1,36 +1,19 @@
-// Simple in-memory storage for MVP production safety (Hardened)
-// Uses globalThis to survive module reloading in dev/some serverless contexts
+import { createClient } from '@vercel/kv';
 
-export interface AnalyticsEvent {
+// KV Client (Auto-configures from env vars: KV_REST_API_URL, KV_REST_API_TOKEN)
+// Safe to call even if env vars missing (operations will fail gracefully in logger)
+export const kv = createClient({
+    url: process.env.KV_REST_API_URL || '',
+    token: process.env.KV_REST_API_TOKEN || '',
+});
+
+export const METRICS_KEY = 'metrics:events';
+
+export type AnalyticEvent = {
     id: string;
     ts: string;
     event_name: string;
-    tool_mode: string;
-    landing_context: string;
+    tool_mode: 'single' | 'bulk' | 'unknown';
+    landing_context: 'bulk_landing' | 'home' | 'tool_other' | 'unknown';
     properties: string; // JSON string
-}
-
-// Global augmentation
-const globalStore = globalThis as unknown as { _analyticsEvents: AnalyticsEvent[] };
-
-if (!globalStore._analyticsEvents) {
-    globalStore._analyticsEvents = [];
-}
-
-const events = globalStore._analyticsEvents;
-
-export function getDb() {
-    return { events };
-}
-
-export function insertEvent(evt: AnalyticsEvent) {
-    events.push(evt);
-    // Limit to 1000 events to prevent memory leak
-    if (events.length > 1000) {
-        events.shift();
-    }
-}
-
-export function getAllEvents() {
-    return events;
-}
+};

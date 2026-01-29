@@ -1,5 +1,4 @@
-import { getAllEvents } from './db';
-import path from 'path';
+import { kv, METRICS_KEY, AnalyticEvent } from './db';
 
 // Time helpers
 const NOW = () => new Date();
@@ -21,15 +20,32 @@ export interface DashboardMetrics {
     footerToBulk: { byMode: number, byProps: number };
 }
 
-export function getDashboardMetrics(): DashboardMetrics {
-    const events = getAllEvents();
+async function getAllEvents(): Promise<AnalyticEvent[]> {
+    try {
+        // Fetch all events. Range 0 -1 means everything.
+        // KV returns list of objects if we stored them as JSON objects (vercel/kv client handles serialization often),
+        // OR it returns strings? 
+        // @vercel/kv client automatically serializes/deserializes JSON if we pass objects.
+        // So `kv.lrange` should return AnalyticEvent[] directly.
+
+        const events = await kv.lrange<AnalyticEvent>(METRICS_KEY, 0, -1);
+        return events || [];
+    } catch (e) {
+        console.error('Failed to fetch events from KV:', e);
+        return [];
+    }
+}
+
+export async function getDashboardMetrics(): Promise<DashboardMetrics> {
+    const events = await getAllEvents();
     const d7 = DAYS_AGO(7);
     const d14 = DAYS_AGO(14);
 
     // Helpers
-    const count = (eventName: string, since: string, filterFn?: (e: any) => boolean) => {
+    const count = (eventName: string, since: string, filterFn?: (e: AnalyticEvent) => boolean) => {
         return events.filter(e => {
             if (e.event_name !== eventName) return false;
+            // Lexical comparison of ISO strings works for dates
             if (e.ts < since) return false;
             if (filterFn && !filterFn(e)) return false;
             return true;
@@ -89,20 +105,33 @@ export function getDashboardMetrics(): DashboardMetrics {
     };
 }
 
-export function getDebugInfo() {
-    // Return safe debug info
-    const events = getAllEvents();
+export async function getDebugInfo() {
+    try {
+        // Fetch only recent 20 events for debug info to save bandwidth if list is huge
+        // But to get total count, we need LLEN
+        const totalEvents = await kv.llen(METRICS_KEY);
 
-    // Recent events: Sort by TS desc, limit 10
-    const sorted = [...events].sort((a, b) => b.ts.localeCompare(a.ts));
-    const recent = sorted.slice(0, 10);
+        // Get recent events (first 10)
+        // Since we LPUSH, 0 is the newest.
+        const recent = await kv.lrange<AnalyticEvent>(METRICS_KEY, 0, 9);
 
-    const lastFooter = sorted.find(e => e.event_name === 'footer_navigation_clicked');
+        // Find last footer event - this requires scanning. 
+        // For MVP/Internal efficiency, let's just scan the top 100. If it's not there, say "Not in recent 100".
+        const top100 = await kv.lrange<AnalyticEvent>(METRICS_KEY, 0, 99);
+        const lastFooter = top100.find(e => e.event_name === 'footer_navigation_clicked');
 
-    return {
-        dbPath: 'In-Memory (Ephemeral)',
-        totalEvents: events.length,
-        recentEvents: recent,
-        lastFooterEvent: lastFooter || null
-    };
+        return {
+            dbPath: 'Vercel KV (Redis)',
+            totalEvents,
+            recentEvents: recent,
+            lastFooterEvent: lastFooter || null
+        };
+    } catch (e) {
+        return {
+            dbPath: 'Vercel KV (Error)',
+            totalEvents: 0,
+            recentEvents: [],
+            lastFooterEvent: null
+        };
+    }
 }

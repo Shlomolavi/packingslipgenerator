@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
 
         // Server-side logging to DB
         console.log(`[API/InternalEvent] Received: ${event_name}`, payload);
-        logEvent(event_name, payload);
+        await logEvent(event_name, payload);
 
         return NextResponse.json({ success: true });
     } catch (error) {

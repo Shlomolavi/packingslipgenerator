@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@react-pdf/renderer": "^4.3.2",
+    "@vercel/kv": "^3.0.0",
     "fflate": "^0.8.2",
     "file-saver": "^2.0.5",
     "next": "16.1.1",
