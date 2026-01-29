@@ -10,7 +10,7 @@ export default async function InternalMetricsPage({
     searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
     // 1. Protection (MVP)
-    const expectedToken = process.env.INTERNAL_METRICS_TOKEN;
+    const expectedToken = "1234";
     if (!expectedToken) {
         return notFound();
     }
