@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { logEvent } from "../../../lib/logger";
+import { KV_ENV_SCHEME } from "../../../lib/db";
 
 const ALLOWED_EVENTS = new Set([
     "bulk_csv_uploaded",
@@ -29,7 +30,7 @@ export async function POST(req: NextRequest) {
         console.log(`[API/InternalEvent] Received: ${event_name}`, payload);
         await logEvent(event_name, payload);
 
-        return NextResponse.json({ success: true });
+        return NextResponse.json({ success: true, kv_env: KV_ENV_SCHEME });
     } catch (error) {
         console.error("[API/InternalEvent] Error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

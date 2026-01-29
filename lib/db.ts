@@ -1,10 +1,38 @@
 import { createClient } from '@vercel/kv';
 
-// KV Client (Auto-configures from env vars: KV_REST_API_URL, KV_REST_API_TOKEN)
+// 1. Try "KV_..." (Official Vercel KV)
+// 2. Try "STORAGE_..." (Vercel Storage integration default sometimes)
+const getEnv = () => {
+    if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
+        return {
+            url: process.env.KV_REST_API_URL,
+            token: process.env.KV_REST_API_TOKEN,
+            scheme: 'KV' as const
+        };
+    }
+    if (process.env.STORAGE_REST_API_URL && process.env.STORAGE_REST_API_TOKEN) {
+        return {
+            url: process.env.STORAGE_REST_API_URL,
+            token: process.env.STORAGE_REST_API_TOKEN,
+            scheme: 'STORAGE' as const
+        };
+    }
+    return {
+        url: '',
+        token: '',
+        scheme: 'MISSING' as const
+    };
+};
+
+const envConfig = getEnv();
+
+export const KV_ENV_SCHEME = envConfig.scheme;
+
+// KV Client
 // Safe to call even if env vars missing (operations will fail gracefully in logger)
 export const kv = createClient({
-    url: process.env.KV_REST_API_URL || '',
-    token: process.env.KV_REST_API_TOKEN || '',
+    url: envConfig.url,
+    token: envConfig.token,
 });
 
 export const METRICS_KEY = 'metrics:events';
