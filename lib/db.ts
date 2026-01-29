@@ -1,8 +1,19 @@
 import { createClient } from '@vercel/kv';
 
-// 1. Try "KV_..." (Official Vercel KV)
-// 2. Try "STORAGE_..." (Vercel Storage integration default sometimes)
+// 1. Try "REDIS_URL" (Vercel Redis generic)
+// 2. Try "KV_..." (Official Vercel KV)
+// 3. Try "STORAGE_..." (Vercel Storage integration default sometimes)
 const getEnv = () => {
+    // Check REDIS_URL first
+    if (process.env.REDIS_URL) {
+        return {
+            url: process.env.REDIS_URL,
+            // If REDIS_TOKEN exists, use it. Otherwise, assume URL has auth or client handles it.
+            token: process.env.REDIS_TOKEN || process.env.KV_REST_API_TOKEN || '',
+            scheme: 'REDIS_URL' as const
+        };
+    }
+
     if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
         return {
             url: process.env.KV_REST_API_URL,
