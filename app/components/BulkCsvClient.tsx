@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 export const BulkCsvAnalytics = () => {
     useEffect(() => {
@@ -14,15 +15,22 @@ export const BulkCsvAnalytics = () => {
 };
 
 export const BulkCsvCta = () => {
+    const searchParams = useSearchParams();
+    const debug = searchParams.get("debug_metrics");
+
     const handleClick = () => {
         if (typeof window !== 'undefined' && (window as any).gtag) {
             (window as any).gtag('event', 'bulk_csv_upload_click');
         }
     };
 
+    const href = debug
+        ? `/?debug_metrics=${debug}#bulk-csv-upload`
+        : `/#bulk-csv-upload`;
+
     return (
         <Link
-            href="/#bulk-csv-upload"
+            href={href}
             onClick={handleClick}
             className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1"
         >
