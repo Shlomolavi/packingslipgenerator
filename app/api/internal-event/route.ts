@@ -14,13 +14,16 @@ const ALLOWED_EVENTS = new Set([
     "upgrade_cta_clicked",
     "single_order_started",
     "bulk_csv_upload_success",
-    "single_pdf_generated"
+    "single_pdf_generated",
+    "manual_verification_event"
 ]);
 
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
-        const { event_name, ...payload } = body;
+        // Backward compatibility: support 'event' or 'event_name'
+        const event_name = body.event_name || body.event;
+        const { event_name: _n, event: _e, ...payload } = body;
 
         if (!event_name || !ALLOWED_EVENTS.has(event_name)) {
             return NextResponse.json({ error: "Invalid or missing event_name" }, { status: 400 });
