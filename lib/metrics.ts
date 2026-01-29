@@ -68,13 +68,10 @@ export async function getDashboardMetrics(): Promise<DashboardMetrics> {
     bulkEvents.forEach(evt => {
         try {
             const props = JSON.parse(evt.properties);
-            const cnt = props.orders_count || 0;
-            if (cnt > 0) {
-                if (cnt <= 3) dist['1-3']++;
-                else if (cnt <= 10) dist['4-10']++;
-                else if (cnt <= 25) dist['11-25']++;
-                else if (cnt <= 50) dist['26-50']++;
-                else if (cnt <= 100) dist['51-100']++;
+            // Use stored bucket directly. Do NOT re-calculate.
+            const bucket = props.order_size_bucket;
+            if (bucket && dist.hasOwnProperty(bucket)) {
+                dist[bucket]++;
             }
         } catch (e) { }
     });
@@ -120,18 +117,34 @@ export async function getDebugInfo() {
         const top100 = await kv.lrange<AnalyticEvent>(METRICS_KEY, 0, 99);
         const lastFooter = top100.find(e => e.event_name === 'footer_navigation_clicked');
 
+        // Find last bulk upload to verify bucketing
+        const lastBulk = top100.find(e => e.event_name === 'bulk_csv_upload_success');
+        let lastBulkInfo = null;
+        if (lastBulk) {
+            try {
+                const p = JSON.parse(lastBulk.properties);
+                lastBulkInfo = {
+                    orders_count: p.orders_count,
+                    rows_count: p.rows_count,
+                    order_size_bucket: p.order_size_bucket
+                };
+            } catch (e) { }
+        }
+
         return {
             dbPath: 'Vercel KV (Redis)',
             totalEvents,
             recentEvents: recent,
-            lastFooterEvent: lastFooter || null
+            lastFooterEvent: lastFooter || null,
+            lastBulkEvent: lastBulkInfo
         };
     } catch (e) {
         return {
             dbPath: 'Vercel KV (Error)',
             totalEvents: 0,
             recentEvents: [],
-            lastFooterEvent: null
+            lastFooterEvent: null,
+            lastBulkEvent: null
         };
     }
 }
