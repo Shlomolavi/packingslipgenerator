@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { Metadata } from "next";
 import { Hero } from "../components/Hero";
@@ -166,7 +167,9 @@ export default function BulkCsvPage() {
                 />
 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-                    <BulkCsvCta />
+                    <Suspense fallback={<div className="h-14 w-80 bg-gray-200 dark:bg-zinc-800 rounded-full animate-pulse"></div>}>
+                        <BulkCsvCta />
+                    </Suspense>
                     <a
                         href="/sample-bulk-orders.csv"
                         download
