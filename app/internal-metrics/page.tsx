@@ -1,4 +1,4 @@
-import { getDashboardMetrics, getDebugInfo } from "../../../lib/metrics";
+import { getDashboardMetrics, getDebugInfo } from "../../lib/metrics";
 import { notFound } from "next/navigation";
 import { headers } from "next/headers";
 
