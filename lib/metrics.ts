@@ -69,7 +69,9 @@ export async function getDashboardMetrics(): Promise<DashboardMetrics> {
         try {
             const props = JSON.parse(evt.properties);
             // Use stored bucket directly. Do NOT re-calculate.
-            const bucket = props.order_size_bucket;
+            // Defensive: Normalization (snake_case preferred, check camelCase fallback)
+            const bucket = props.order_size_bucket || props.orderSizeBucket;
+
             if (bucket && dist.hasOwnProperty(bucket)) {
                 dist[bucket]++;
             }
@@ -123,20 +125,29 @@ export async function getDebugInfo() {
         if (lastBulk) {
             try {
                 const p = JSON.parse(lastBulk.properties);
-                lastBulkInfo = {
-                    orders_count: p.orders_count,
-                    rows_count: p.rows_count,
-                    order_size_bucket: p.order_size_bucket
-                };
+                // RAW properties for debugging
+                lastBulkInfo = p;
             } catch (e) { }
         }
+
+        // Computed bucket summary from top 100 (DEBUG ONLY)
+        const bucketDebug: Record<string, number> = {};
+        top100.forEach(e => {
+            if (e.event_name !== 'bulk_csv_upload_success') return;
+            try {
+                const p = JSON.parse(e.properties);
+                const b = p.order_size_bucket || p.orderSizeBucket || 'MISSING';
+                bucketDebug[b] = (bucketDebug[b] || 0) + 1;
+            } catch (err) { }
+        });
 
         return {
             dbPath: 'Vercel KV (Redis)',
             totalEvents,
             recentEvents: recent,
             lastFooterEvent: lastFooter || null,
-            lastBulkEvent: lastBulkInfo
+            lastBulkEvent: lastBulkInfo, // Now returns RAW object
+            bucketDebug,
         };
     } catch (e) {
         return {
@@ -144,7 +155,8 @@ export async function getDebugInfo() {
             totalEvents: 0,
             recentEvents: [],
             lastFooterEvent: null,
-            lastBulkEvent: null
+            lastBulkEvent: null,
+            bucketDebug: {}
         };
     }
 }

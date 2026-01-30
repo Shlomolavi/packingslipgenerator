@@ -50,6 +50,20 @@ export default async function InternalMetricsPage({
                                 {debug.lastFooterEvent ? JSON.stringify(JSON.parse((debug.lastFooterEvent as any).properties), null, 2) : 'None'}
                             </pre>
                         </div>
+
+                        <div className="mt-4 pt-4 border-t border-yellow-200">
+                            <h3 className="text-xs font-bold text-gray-500 uppercase mb-1">Last Bulk Event (RAW)</h3>
+                            <pre className="text-[10px] text-gray-600 bg-white p-2 rounded border border-yellow-100 overflow-x-auto max-h-40 overflow-y-auto">
+                                {(debug as any).lastBulkEvent ? JSON.stringify((debug as any).lastBulkEvent, null, 2) : 'None'}
+                            </pre>
+                        </div>
+
+                        <div className="mt-4 pt-4 border-t border-yellow-200">
+                            <h3 className="text-xs font-bold text-gray-500 uppercase mb-1">Bucket Keys (Sample)</h3>
+                            <pre className="text-[10px] text-gray-600 bg-white p-2 rounded border border-yellow-100 overflow-x-auto">
+                                {JSON.stringify((debug as any).bucketDebug, null, 2)}
+                            </pre>
+                        </div>
                     </div>
                     <div>
                         <h3 className="text-xs font-bold text-gray-500 uppercase mb-2">Recent Events (Last 10)</h3>
