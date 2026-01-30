@@ -234,11 +234,14 @@ export const CsvBulkUpload = () => {
 
                         // Success Telemetry (Internal)
                         if (!successLoggedRef.current) {
+                            // Source of truth: generated files in ZIP
+                            const pdfCount = Object.keys(zipData).length;
+
                             logEventClient('bulk_csv_upload_success', {
                                 tool_mode: 'bulk',
-                                orders_count: groupKeys.length,
+                                orders_count: pdfCount,
                                 rows_count: rows.length,
-                                order_size_bucket: getOrderBucket(groupKeys.length),
+                                order_size_bucket: getOrderBucket(pdfCount),
                                 landing_context: getLandingContext()
                             });
                             successLoggedRef.current = true;

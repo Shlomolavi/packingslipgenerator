@@ -53,9 +53,17 @@ export default async function InternalMetricsPage({
 
                         <div className="mt-4 pt-4 border-t border-yellow-200">
                             <h3 className="text-xs font-bold text-gray-500 uppercase mb-1">Last Bulk Event (RAW)</h3>
-                            <pre className="text-[10px] text-gray-600 bg-white p-2 rounded border border-yellow-100 overflow-x-auto max-h-40 overflow-y-auto">
-                                {(debug as any).lastBulkEvent ? JSON.stringify((debug as any).lastBulkEvent, null, 2) : 'None'}
-                            </pre>
+                            <div className="text-[10px] text-gray-600 bg-white p-2 rounded border border-yellow-100 overflow-x-auto">
+                                {((debug as any).lastBulkEvent) ? (
+                                    <>
+                                        <div><strong>orders_count (PDFs Generated):</strong> {(debug as any).lastBulkEvent.orders_count}</div>
+                                        <div><strong>rows_count:</strong> {(debug as any).lastBulkEvent.rows_count}</div>
+                                        <div><strong>order_size_bucket:</strong> {(debug as any).lastBulkEvent.order_size_bucket}</div>
+                                        <hr className="my-1 border-gray-100" />
+                                        <pre className="max-h-20 overflow-y-auto">{JSON.stringify((debug as any).lastBulkEvent, null, 2)}</pre>
+                                    </>
+                                ) : 'None'}
+                            </div>
                         </div>
 
                         <div className="mt-4 pt-4 border-t border-yellow-200">
